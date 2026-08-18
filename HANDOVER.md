@@ -486,3 +486,52 @@ La duración vive en un solo sitio, `src/styles/tokens.css`:
 Es una desviación deliberada del archivo (Figma declara 950 ms con
 `EASE_IN_AND_OUT_BACK`): a ese ancho, el retroceso del *back* se lee como
 pereza. El resto de tiempos del sitio siguen siendo los de Figma.
+
+---
+
+## 10. Ajuste final de la expansión y el retrato del hero
+
+### Expansión casi instantánea
+
+`--d-tira` baja a **180 ms** y la curva pasa a `cubic-bezier(0.16, 1, 0.3, 1)`
+(easeOutExpo), que recorre el 90% del camino en el primer 30% del tiempo. La
+lectura ya no es "algo que se abre" sino "ya está abierto".
+
+Medido, idéntico en las siete columnas:
+
+| | |
+|---|---|
+| 50% del recorrido | **16 ms** (un fotograma) |
+| 90% | **68 ms** |
+| 99% | **120 ms** |
+
+Progresión de la sección, por si hay que volver atrás:
+950 ms `back` (Figma) → 380 ms `easeOutQuint` → **180 ms `easeOutExpo`**.
+Todo vive en `--d-tira`, `--d-tira-panel` y `--e-expandir` de `tokens.css`.
+
+### El retrato del hero
+
+Lo aporta el cliente: PNG de 2000×1873 con alfa real (60.9% de píxeles
+transparentes). El nombre del archivo trae el hash `26f6b514af…`, que es el
+mismo del `imageHash` del fill de `1295:1565` — o sea, es el original que se
+subió a Figma, no una reexportación.
+
+Dos cosas al instalarlo:
+
+1. **Se recorta a la caja del sujeto** (`getbbox()` → 92,192 → 1897,1871). El
+   archivo trae ~5% de margen lateral y ~10% superior de píxeles
+   transparentes; sin recortar, el hombre sale bastante más pequeño que en
+   Figma, porque el nodo usa `scaleMode: FILL` sobre una caja ya ajustada.
+   Recortado, la proporción queda en 1.075 frente al 1.063 de la caja: entra
+   con `object-fit: contain` sin franjas apreciables.
+2. **Va como `.webp`** a 1000 px de ancho (159 KB). Se muestra a 388 CSS px
+   como máximo, así que da ~2.6x para pantallas de alta densidad.
+   `ACTUALIZAR.bat` borra el `hero-retrato.png` antiguo para que no queden dos
+   archivos compitiendo — `Foto.astro` resuelve `webp` antes que `png`.
+
+### Pendiente que sigue abierto
+
+Las siete fotos de la tira son los originales de Figma sin optimizar y suman
+unos 35 MB (`retrato-2` 7.6 MB, `retrato-6` 8.8 MB, `retrato-7` 6.9 MB).
+Convertidas a WebP al mismo tratamiento que el hero bajarían a menos de 2 MB en
+total sin diferencia visible.

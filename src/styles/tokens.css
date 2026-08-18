@@ -67,10 +67,11 @@
   --e-back: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* EASE_IN_AND_OUT_BACK */
   --e-out: cubic-bezier(0, 0, 0.58, 1); /* EASE_OUT */
 
-  /* Salida rápida con aterrizaje suave (easeOutQuint). Se usa SOLO en la
-     expansión de la tira: ahí el back de Figma retrocede antes de arrancar y
-     sobre un ancho eso se lee como pereza, no como carácter. */
-  --e-expandir: cubic-bezier(0.22, 1, 0.36, 1);
+  /* easeOutExpo: recorre el 90% del camino en el primer 30% del tiempo. Es lo
+     que hace que la tira se lea como "ya está abierta" en vez de como algo que
+     se abre. Se usa SOLO ahí; el back de Figma retrocede antes de arrancar y
+     sobre un ancho eso se lee como pereza. */
+  --e-expandir: cubic-bezier(0.16, 1, 0.3, 1);
 
   --d-nav: 300ms;
   --d-boton: 350ms;
@@ -84,8 +85,8 @@
   /* Figma declara 950ms para la tira (SMART_ANIMATE). Se baja a 380 a
      petición: a ese ancho, 950 con back se siente lento. El resto de tiempos
      siguen siendo los del archivo. */
-  --d-tira: 380ms;
-  --d-tira-panel: 240ms;
+  --d-tira: 180ms;
+  --d-tira-panel: 150ms;
 }
 
 /* Debajo de 1440 el lienzo se escala proporcionalmente hasta 1200, y a partir
