@@ -38,10 +38,11 @@ import Foto from "../Foto.astro";
 </section>
 
 <style>
+  /* Sin overflow:hidden — recortaba el arte justo cuando crece un 5.24% y
+     gira en el hover. El aire extra lo da el padding. */
   .cta-final {
     background: var(--c-morado);
-    padding-block: 31px 35px;
-    overflow: hidden;
+    padding-block: 46px 50px;
   }
 
   .rejilla {
@@ -51,8 +52,14 @@ import Foto from "../Foto.astro";
     align-items: center;
   }
 
-  /* ---- arte 233:1890 (510 × 454) ---- */
-  .arte { inline-size: 100%; }
+  /* ---- arte 233:1890 (510 × 454) ----
+     El margen negativo reserva el sitio que ocupa la pieza ya crecida y
+     girada, para que nada la recorte durante la transición. */
+  .arte {
+    inline-size: 100%;
+    padding: 26px;
+    margin: -26px;
+  }
 
   .pieza {
     position: relative;

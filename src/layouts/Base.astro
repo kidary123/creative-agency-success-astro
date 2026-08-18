@@ -1,37 +1,203 @@
 ---
 import "../styles/global.css";
+import { sitio, servicios, metodoPasos, recursos } from "../data/sitio";
 
 interface Props {
-  titulo: string;
+  titulo?: string;
   descripcion?: string;
   imagen?: string;
+  tipo?: "website" | "article";
 }
 
-const { titulo, descripcion = "", imagen = "/assets/og.webp" } = Astro.props;
-const canonica = new URL(Astro.url.pathname, Astro.site ?? "http://localhost:4321");
+const {
+  titulo = sitio.titulo,
+  descripcion = sitio.descripcion,
+  imagen = sitio.imagenOg,
+  tipo = "website",
+} = Astro.props;
+
+const canonica = new URL(Astro.url.pathname, sitio.url).href;
+const urlImagen = new URL(imagen, sitio.url).href;
+
+/* ---------------------------------------------------------------------------
+   JSON-LD. Un solo @graph con nodos enlazados por @id, que es lo que Google y
+   los rastreadores de modelos esperan: Organization + WebSite + WebPage +
+   los servicios y el método como ItemList.
+   Los campos que el Figma no aportaba (teléfono, dirección, redes) se omiten
+   en lugar de inventarse: un dato falso en JSON-LD es peor que su ausencia.
+--------------------------------------------------------------------------- */
+const org: Record<string, unknown> = {
+  "@type": "Organization",
+  "@id": `${sitio.url}/#organization`,
+  name: sitio.nombre,
+  alternateName: sitio.nombreCorto,
+  url: sitio.url,
+  description: sitio.descripcion,
+  logo: {
+    "@type": "ImageObject",
+    "@id": `${sitio.url}/#logo`,
+    url: new URL("/assets/logo-cas.svg", sitio.url).href,
+    caption: sitio.nombre,
+  },
+  foundingDate: sitio.fundacion,
+  founder: { "@type": "Person", name: sitio.fundador },
+  knowsAbout: [
+    "Creative agency growth",
+    "Agency positioning",
+    "Recurring revenue",
+    "Agency operations",
+    "Pricing strategy",
+  ],
+};
+if (sitio.telefono) org.telephone = sitio.telefono;
+if (sitio.correo) org.email = sitio.correo;
+if (sitio.redes.length) org.sameAs = sitio.redes;
+if (sitio.direccion) {
+  org.address = {
+    "@type": "PostalAddress",
+    streetAddress: sitio.direccion.calle,
+    addressLocality: sitio.direccion.ciudad,
+    addressRegion: sitio.direccion.region,
+    postalCode: sitio.direccion.cp,
+    addressCountry: sitio.direccion.pais,
+  };
+}
+
+const grafo = {
+  "@context": "https://schema.org",
+  "@graph": [
+    org,
+    {
+      "@type": "WebSite",
+      "@id": `${sitio.url}/#website`,
+      url: sitio.url,
+      name: sitio.nombre,
+      description: sitio.descripcion,
+      publisher: { "@id": `${sitio.url}/#organization` },
+      inLanguage: sitio.idioma,
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${canonica}#webpage`,
+      url: canonica,
+      name: titulo,
+      description: descripcion,
+      isPartOf: { "@id": `${sitio.url}/#website` },
+      about: { "@id": `${sitio.url}/#organization` },
+      primaryImageOfPage: { "@type": "ImageObject", url: urlImagen },
+      inLanguage: sitio.idioma,
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${sitio.url}/#programas`,
+      name: "Programs",
+      itemListElement: servicios.map((s, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Service",
+          name: s.nombre,
+          description: s.descripcion,
+          serviceType: `Agency coaching — ${s.etapa}`,
+          provider: { "@id": `${sitio.url}/#organization` },
+          areaServed: "Worldwide",
+          audience: { "@type": "BusinessAudience", audienceType: "Creative agency owners" },
+        },
+      })),
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${sitio.url}/#scale-method`,
+      name: "The Scale Method",
+      description:
+        "The six steps it takes to scale a creative agency, creating impact, providing freedom and maximizing profits.",
+      step: metodoPasos.map((p, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: p,
+        url: `${sitio.url}/#metodo`,
+      })),
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${sitio.url}/#recursos`,
+      name: "Resources",
+      itemListElement: recursos.map((r, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: { "@type": "CreativeWork", name: r.nombre, genre: r.tipo, url: `${sitio.url}/#recursos` },
+      })),
+    },
+  ],
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={sitio.idioma}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica} />
 
-    <meta property="og:type" content="website" />
+    <meta name="author" content={sitio.nombre} />
+    <meta name="publisher" content={sitio.nombre} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#021E46" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta property="og:type" content={tipo} />
+    <meta property="og:site_name" content={sitio.nombre} />
+    <meta property="og:locale" content={sitio.locale} />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descripcion} />
-    <meta property="og:image" content={new URL(imagen, canonica)} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={urlImagen} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${sitio.nombre} — ${sitio.descripcionCorta}`} />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:image" content={urlImagen} />
+    <meta name="twitter:image:alt" content={`${sitio.nombre} — ${sitio.descripcionCorta}`} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/logo-cas.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <!-- Pistas para rastreadores de modelos: dónde está la versión legible. -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <link rel="alternate" type="text/markdown" href="/content/index.md" title="Markdown" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(grafo)} is:inline />
 
     <slot name="head" />
   </head>
   <body>
+    <a class="saltar" href="#hero">Skip to content</a>
     <slot />
     <script>
       import "../scripts/animar.js";
     </script>
   </body>
 </html>
+
+<style is:global>
+  .saltar {
+    position: absolute;
+    inset-block-start: -100px;
+    inset-inline-start: 12px;
+    z-index: 100;
+    padding: 10px 18px;
+    background: var(--c-azul);
+    color: var(--c-white);
+    transition: inset-block-start 0.2s ease;
+  }
+  .saltar:focus-visible { inset-block-start: 12px; }
+</style>

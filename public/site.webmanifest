@@ -1,0 +1,13 @@
+{
+  "name": "Creative Agency Success",
+  "short_name": "CAS",
+  "description": "Coaching and scaling for creative agency owners. Impact, freedom and profit.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F1EF",
+  "theme_color": "#021E46",
+  "lang": "en",
+  "icons": [
+    { "src": "/assets/logo-cas.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

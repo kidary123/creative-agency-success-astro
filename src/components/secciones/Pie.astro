@@ -62,8 +62,14 @@ const columnas = [
     align-items: start;
   }
 
-  .marca :global(.logo-pie) { --escudo: var(--c-azul); }
-  .marca :global(.logo-pie):hover { --escudo: var(--c-white); }
+  /* 154:169 es la variante "Light": escudo blanco y letras azules, fijo.
+     Sobre el azul del pie no debe alternar en hover. */
+  .marca :global(.logo-pie),
+  .marca :global(.logo-pie):hover,
+  .marca :global(.logo-pie):focus-visible {
+    --escudo: var(--c-white);
+    --palabra: var(--c-azul);
+  }
 
   .copy {
     margin-block-start: 12px;

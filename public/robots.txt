@@ -1,0 +1,15 @@
+# Creative Agency Success
+User-agent: *
+Allow: /
+
+# Rastreadores de modelos: la versión legible está en /llms.txt y /catalog.txt
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://creative-agency-success-astro.vercel.app/sitemap.xml

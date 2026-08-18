@@ -122,9 +122,12 @@ const etiquetas = [
     background: none;
   }
 
-  /* El retrato es un recorte con fondo transparente: mientras falta el raster,
-     el marcador va translúcido para no tapar las formas de debajo. */
+  /* 1295:1565 es un PNG recortado con alfa: NO debe llevar fondo propio.
+     Mientras falta el raster, el marcador va translúcido para no tapar las
+     formas de debajo, y en cuanto llega la foto el marco queda transparente. */
+  .arte :global(.retrato) { background: none !important; }
   .arte :global(.retrato.falta) { opacity: 0.42; }
+  .arte :global(.retrato) img { object-fit: contain; object-position: bottom; }
 
   .etiqueta {
     position: absolute;

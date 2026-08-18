@@ -298,3 +298,84 @@ Los `.bat` de la raíz (`DEV.bat`, `DEPLOY-ME.bat`, `LOGIN-VERCEL.bat`,
 > firmadas del manifest estén caducadas (7 días) o si tu red también bloquea
 > `figma.com`. Para las fotos, la vía fiable es exportarlas a mano desde Figma
 > a `public/assets/fotos/` con los ids de la tabla de la sección 1.
+
+---
+
+## 7. Ronda de ajustes (2026-08-18)
+
+### Dos errores míos que conviene conocer
+
+**1. Identificadores de imagen inventados.** La primera versión de `FOTOS.bat`
+llevaba UUIDs que no consulté al archivo: solo unos pocos eran reales, el resto
+me los inventé. Por eso fallaban casi todas las descargas y el "fondo" que se
+veía tras el hombre del hero era en realidad el marcador rayado de
+`Foto.astro`. Los 21 de la versión actual están consultados uno a uno con
+`download_assets` / `get_design_context`. **Regla: ningún identificador de
+asset se escribe de memoria.**
+
+**2. La cuña #F4F1EF estaba una sección más abajo.** En el volcado de
+`get_metadata`, el nodo `42:72` aparece con `x=1440, y=2764.99` — pero está
+girado 180°, y lo que reporta es su **esquina inferior derecha**. Su origen real
+es `x=0, y=1923`, o sea que es el fondo de *Collective Confidence*, no el de
+*Agency Accelerator*, que va sobre el blanco del frame.
+
+> **Trampa 12.** Un vector girado reporta en `get_metadata` una caja que no es
+> su origen. Antes de anclar un fondo a una sección, confirma la caja con
+> `absoluteBoundingBox` relativo al frame — es lo único fiable. Y el giro
+> también invierte la inclinación: `42:72` tiene el borde recto arriba y el
+> inclinado abajo (94.55% → 100%), no al revés.
+
+### Cambios aplicados
+
+| # | Qué | Dónde |
+|---|---|---|
+| 1 | Menú agrupado a la derecha (`justify-content: flex-end`, gap 34) | `Nav.astro` |
+| 2 | El retrato del hero nunca lleva fondo propio; `object-fit: contain` | `Hero.astro` |
+| 3 | Tira a sangre (`100vw`) y expansión horizontal que desplaza a las demás | `Historias.astro` |
+| 4 | Cuña #F4F1EF de `42:72` con su inclinación real | `Confianza.astro` |
+| 5 | Sin fondo en Servicios; insignia a 78.5% / 69% | `Servicios.astro` |
+| 6 | Fuera `overflow: hidden`; padding+margen negativo para el arte al crecer | `CtaFinal.astro` |
+| 7 | Logo del pie fijo: escudo blanco, letras azules | `Pie.astro` |
+| 8 | Metadatos completos + JSON-LD `@graph` | `Base.astro`, `src/data/sitio.ts` |
+| 9 | `/llms.txt`, `/catalog.txt`, `/sitemap.xml`, `robots.txt`, markdown, manifest, favicon, OG | `src/pages/*`, `public/` |
+| 10 | En táctil, tarjetas apiladas sin hover ni expansión | `Historias.astro` |
+| 11 | En táctil, los seis pasos pasan a lista numerada bajo la rueda | `Metodo.astro` |
+
+### Sobre el punto 11
+
+El fallo no era solo que las etiquetas se pisaran: al pasar `.rueda` a
+`position: static` en móvil, sus capas absolutas perdieron el bloque contenedor
+y la foto se salía encima de la lista. Va con `position: relative`. Y la cuña
+`::after` necesita `z-index: -1` para pintarse sobre el fondo de la sección
+pero por debajo del contenido.
+
+### Capa AI/SEO
+
+- `/llms.txt` y `/catalog.txt` **se generan** desde `src/data/sitio.ts`
+  (`src/pages/llms.txt.ts`, `catalog.txt.ts`). No se editan a mano: así no
+  pueden desincronizarse de lo que se pinta.
+- `/catalog.txt` es TSV con cabecera: `type · id · title · url · description`.
+  29 registros: secciones, servicios, pasos del método, recursos y documentos.
+- Markdown en `public/content/`: `index.md`, `programs.md`, `scale-method.md`,
+  `resources.md`, `testimonials.md`. Están en el repo y además se sirven.
+- JSON-LD: un `@graph` con `Organization`, `WebSite`, `WebPage`, un `ItemList`
+  de servicios, un `HowTo` con los seis pasos y un `ItemList` de recursos.
+  **Los campos que el Figma no aportaba se omiten en vez de inventarse** —
+  teléfono, dirección y redes están a `null` en `sitio.ts`.
+- HTML semántico: `header` / `nav` / `main` / `section` / `article` / `footer`,
+  la lista del método como `<ol>`, las cifras como `<dl>`, los testimonios como
+  `<blockquote>`, y un enlace "Skip to content".
+
+### Lo que necesito de ti para cerrar los metadatos
+
+Están puestos con valores por defecto razonables en `src/data/sitio.ts`, pero
+estos cuatro no salen del Figma y **no me los he inventado**:
+
+1. **Dominio definitivo** (ahora apunta al `.vercel.app`). Cambia `sitio.url`.
+2. **Teléfono y correo** de contacto.
+3. **Redes sociales** (van a `sameAs` del JSON-LD, que es lo que enlaza la
+   marca con sus perfiles).
+4. **Dirección postal**, si la empresa quiere aparecer como negocio local.
+
+También conviene sustituir `public/assets/og.png`: el que hay lo generé yo con
+los colores y la tipografía de marca, pero sin las fotos reales.

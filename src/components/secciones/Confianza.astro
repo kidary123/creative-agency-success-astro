@@ -16,6 +16,8 @@ const cifras = [
 ---
 
 <section class="confianza" id="confianza">
+  <div class="onda" aria-hidden="true"></div>
+
   <div class="envoltorio">
     <h2 class="h-seccion" data-animate="fade-up">Ready to find your tribe?</h2>
     <p class="sub" data-animate="fade-up" style="--retardo:110ms">Collective Confidence</p>
@@ -41,7 +43,24 @@ const cifras = [
 </section>
 
 <style>
-  .confianza { padding-block: 118px 0; }
+  .confianza {
+    position: relative;
+    padding-block: 118px 106px;
+    isolation: isolate;
+  }
+
+  /* 42:72 "Rectangle 10" — #F4F1EF, y 1923→2765, girado 180° en Figma: eso
+     deja el borde superior recto y el inferior descendiendo hacia la derecha
+     (45.92 px sobre 842 = 5.45%). Es el fondo de ESTA sección, no el de
+     Servicios: en el volcado de metadatos el vector reportaba su esquina
+     inferior derecha (y=2765) y lo situé una sección más abajo. */
+  .onda {
+    position: absolute;
+    inset: 0;
+    background: var(--c-grey);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 94.55%);
+    z-index: -1;
+  }
 
   .sub {
     margin-block-start: 8px;

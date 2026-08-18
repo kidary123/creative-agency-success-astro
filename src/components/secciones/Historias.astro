@@ -9,10 +9,16 @@
  * SMART_ANIMATE 950ms EASE_IN_AND_OUT_BACK): la columna crece a 520px y se
  * abre un panel con titular, texto y "Learn More".
  *
- * Aquí el panel va en position:absolute para no empujar a sus hermanos, y la
- * altura del contenedor la lleva el propio CSS con :has() hasta la altura
- * exacta de cada variante. Reservar siempre la mayor dejaba medio scroll de
- * hueco muerto en reposo — que es justo el síntoma de la trampa 7.
+ * La tira va a SANGRE (85:488 mide 1443 en un lienzo de 1440, o sea ancho
+ * completo de pantalla).
+ *
+ * El panel va en position:absolute para no empujar a sus hermanos, y la altura
+ * del contenedor la lleva el propio CSS con :has() hasta la altura exacta de
+ * cada variante. Reservar siempre la mayor dejaba medio scroll de hueco muerto
+ * en reposo — que es justo el síntoma de la trampa 7.
+ *
+ * En táctil NO hay hover ni expansión: las siete historias se apilan como
+ * tarjetas, una debajo de otra, con su texto siempre visible.
  */
 import Foto from "../Foto.astro";
 
@@ -108,14 +114,17 @@ const prensa = [
   .cabecera { display: grid; gap: 14px; }
   .cabecera .intro { max-inline-size: 800px; }
 
-  /* ---- tira ---- */
+  /* ---- tira, a sangre ----
+     85:488 mide 1443 px sobre un lienzo de 1440: ocupa el ancho completo de la
+     ventana, no la columna de contenido. */
   .tira {
     display: flex;
     align-items: flex-start;
     gap: 16px;
     margin-block-start: 44px;
-    inline-size: min(100%, 1440px);
-    margin-inline: auto;
+    inline-size: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: 0;
     min-block-size: 489px;
     transition: min-block-size var(--d-tira) var(--e-back);
   }
@@ -151,7 +160,7 @@ const prensa = [
   }
 
   /* El panel no empuja a los hermanos: se posiciona sobre el flujo y la altura
-     que necesita la sección se reserva en el contenedor (ver script). */
+     que necesita la sección la reserva el contenedor con :has(). */
   .panel {
     position: absolute;
     inset-inline: 0;
@@ -176,12 +185,17 @@ const prensa = [
     white-space: pre-line;
   }
 
+  /* ---- expansión horizontal (solo puntero fino y pantalla ancha) ----
+     La columna con el puntero encima crece y empuja a las demás hacia los
+     lados; todas se comportan igual. Las proporciones salen de las variantes:
+     la abierta mide 520 de 1440 y las otras seis se reparten el resto. */
   @media (min-width: 62rem) {
-    .tira:hover .columna { flex-grow: 0.62; }
+    .tira:hover .columna,
+    .tira:focus-within .columna { flex-grow: 0.55; }
 
     .columna:hover,
     .columna:focus-visible,
-    .columna:focus-within { flex-grow: 3.4; }
+    .columna:focus-within { flex-grow: 4.3; }
 
     .columna:hover .panel,
     .columna:focus-visible .panel,
@@ -236,32 +250,22 @@ const prensa = [
   .prensa:hover :global(.marca-prensa) { opacity: 0.45; }
   .prensa :global(.marca-prensa):hover { opacity: 1; filter: grayscale(0); }
 
-  /* ---- táctil / estrecho: el patrón de escritorio se apaga de verdad ----
+  /* ---- táctil / estrecho ----
+     Sin hover y sin expansión: tarjetas apiladas con el texto siempre visible.
      Se redefine la proporción del retrato (trampa 6): con el panel siempre
      abierto, un 180/348 hace que cada tarjeta supere la altura de pantalla. */
   @media (max-width: 62rem) {
-    /* En Figma el móvil no apila las siete historias: es un carrusel
-       (Component 28, 375×324, seis variantes). Apilarlas daba una sección de
-       casi 5000px — patrón de escritorio sobreviviendo al cambio de layout,
-       que es exactamente la trampa 6. */
     .tira {
-      display: flex;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 48px;
       min-block-size: 0 !important;
+      inline-size: 100%;
+      margin-inline: auto;
       padding-inline: var(--margen);
-      overflow-x: auto;
-      overscroll-behavior-inline: contain;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
-    .tira::-webkit-scrollbar { display: none; }
 
-    .columna {
-      padding-block-start: 0;
-      flex: 0 0 min(86%, 420px);
-      scroll-snap-align: center;
-    }
+    .columna { padding-block-start: 0; }
 
     .columna :global(.retrato) {
       block-size: auto;
@@ -280,15 +284,25 @@ const prensa = [
 
     .panel p { margin-block: 12px 20px; }
 
-    /* Repetidos aquí, misma especificidad y más abajo, para que el :hover
-       no se quede pegado tras un toque. */
+    /* Repetidos aquí, misma especificidad y más abajo, para que el :hover no
+       se quede pegado tras un toque y no haya ninguna expansión en táctil. */
+    .tira:hover .columna,
+    .tira:focus-within .columna,
     .columna:hover,
+    .columna:focus-visible,
     .columna:focus-within { flex-grow: 1; }
+
     .columna:hover :global(.retrato),
     .columna:focus-within :global(.retrato) { block-size: auto; }
 
-    .prensa { justify-content: center; gap: 24px 40px; }
+    .prensa { justify-content: center; gap: 24px 40px; flex-wrap: wrap; }
     .prensa-banda { padding-block: 56px; }
   }
-</style>
 
+  /* Cinturón extra: cualquier dispositivo sin puntero fino queda sin hover. */
+  @media (hover: none) {
+    .columna:hover,
+    .columna:focus-within { flex-grow: 1; }
+    .columna:hover :global(.retrato) { block-size: auto; }
+  }
+</style>

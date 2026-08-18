@@ -51,8 +51,6 @@ const tarjetas = [
 ---
 
 <section class="servicios" id="servicios">
-  <div class="onda" aria-hidden="true"></div>
-
   <div class="envoltorio rejilla">
     {tarjetas.map((t, i) => (
       <article class:list={["tarjeta", t.id]} data-animate="fade-up" style={`--retardo:${i * 130}ms; --color:${t.color}; --circulo:${t.circulo}; --tinta-insignia:${t.tintaInsignia};`}>
@@ -100,21 +98,13 @@ const tarjetas = [
 </section>
 
 <style>
+  /* Sin fondo: en el lienzo esta franja (y 2858→3727) queda sobre el blanco
+     del frame. La cuña #F4F1EF que le había puesto es 42:72 y pertenece a
+     Collective Confidence. */
   .servicios {
     position: relative;
     padding-block: 152px 130px;
     isolation: isolate;
-  }
-
-  /* 42:72 — la cuña #F4F1EF que sube por la derecha detrás de las tarjetas. */
-  .onda {
-    position: absolute;
-    inset-inline: 0;
-    inset-block-start: 0;
-    block-size: 842px;
-    background: var(--c-grey);
-    clip-path: polygon(0 5.45%, 100% 0, 100% 100%, 0 100%);
-    z-index: -1;
   }
 
   .rejilla {
@@ -149,8 +139,8 @@ const tarjetas = [
   /* ---- insignia 57:640 / 57:644 (130px, cabalga bloque y banda) ---- */
   .insignia {
     position: absolute;
-    inset-inline-start: 75%;
-    inset-block-start: 74.4%;
+    inset-inline-start: 78.5%;
+    inset-block-start: 69%;
     inline-size: 21.24%;
     aspect-ratio: 1;
     display: grid;

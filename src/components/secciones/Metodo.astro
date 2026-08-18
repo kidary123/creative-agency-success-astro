@@ -50,15 +50,18 @@ const etiquetas = [
       <img class="play activa" style="--x:45.99%; --y:47.32%; --w:8.08%; --h:8.29%;" src="/assets/rueda-play-hover.svg" alt="" />
     </button>
 
-    {etiquetas.map((e) => (
-      <span class="etiqueta" style={`--x:${e.x}%; --y:${e.y}%;`}>{e.t}</span>
-    ))}
+    <ol class="pasos">
+      {etiquetas.map((e) => (
+        <li class="etiqueta" style={`--x:${e.x}%; --y:${e.y}%;`}>{e.t}</li>
+      ))}
+    </ol>
   </div>
 </section>
 
 <style>
   .metodo {
-    padding-block: 100px 40px;
+    position: relative;
+    padding-block: 100px 105px;
     background: var(--c-white);
   }
 
@@ -139,7 +142,16 @@ const etiquetas = [
   .rueda:hover .play.activa { opacity: 1; }
   .rueda:hover .play { scale: 1.1; }
 
-  /* ---- etiquetas ---- */
+  /* ---- etiquetas ----
+     En escritorio la lista no aporta layout: cada paso se posiciona por su
+     inset. En móvil (más abajo) sí se convierte en rejilla. */
+  .pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: contents;
+  }
+
   .etiqueta {
     position: absolute;
     inset-inline-start: var(--x);
@@ -153,14 +165,85 @@ const etiquetas = [
 
   .diagrama:hover .etiqueta { color: var(--c-azul); }
 
+  /* 57:654 — el bloque blanco baja con el borde inferior inclinado (1083 en
+     la izquierda, 1147.92 en la derecha) y se mete sobre la banda beige de
+     Resources. Son 65px de cuña en el lado izquierdo. */
+  .metodo::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 65px;
+    background: var(--c-grey);
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+    pointer-events: none;
+    /* Un hijo con z-index negativo se pinta sobre el fondo de la sección pero
+       por debajo de su contenido en flujo: la cuña no tapa los pasos. */
+    z-index: -1;
+  }
+
+  /* ---- táctil ----
+     Las seis etiquetas dejan de ir en posición absoluta: encajadas alrededor
+     de una rueda de 300px se pisaban unas a otras. Pasan a ser una lista
+     numerada de dos columnas debajo, que además es lo que el paso a paso
+     realmente es. */
   @media (max-width: 900px) {
     .metodo { padding-block: 72px 24px; }
-    .diagrama { aspect-ratio: 1 / 1.05; inline-size: 100%; padding-inline: 0; }
-    .rueda { inset-inline-start: 8%; inline-size: 84%; inset-block-start: 8%; }
-    .etiqueta { font-size: var(--t-etiqueta); }
+
+    .diagrama {
+      aspect-ratio: auto;
+      inline-size: min(100% - var(--margen) * 2, 560px);
+      display: grid;
+      gap: 28px;
+    }
+
+    /* relative, NO static: las capas de la rueda van en position:absolute y
+       con static perdían su bloque contenedor — la foto se salía y se comía
+       la lista de pasos. */
+    .rueda {
+      position: relative;
+      inset-inline-start: auto;
+      inset-block-start: auto;
+      inline-size: 100%;
+      aspect-ratio: 680.53 / 663.6;
+    }
+
+    .etiqueta {
+      position: static;
+      translate: none;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      white-space: normal;
+      font-size: 16px;
+      color: var(--c-azul);
+      padding-block: 10px;
+      border-block-start: 1px solid #021e461f;
+      counter-increment: paso;
+    }
+
+    .etiqueta::before {
+      content: counter(paso, decimal-leading-zero);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c-verde);
+      flex: none;
+    }
+
+    .pasos {
+      counter-reset: paso;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 24px;
+    }
 
     .rueda:hover .aro:nth-of-type(2),
     .rueda:hover .aro:nth-of-type(3) { rotate: 0deg; }
     .rueda:hover .play { scale: 1; }
+    .diagrama:hover .etiqueta { color: var(--c-azul); }
+  }
+
+  @media (max-width: 420px) {
+    .pasos { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
