@@ -139,7 +139,7 @@ const prensa = [
     inline-size: 100vw;
     margin-inline: calc(50% - 50vw);
     min-block-size: 489px;
-    transition: min-block-size var(--d-tira) var(--e-back);
+    transition: min-block-size var(--d-tira) var(--e-expandir);
   }
 
   .columna {
@@ -147,7 +147,7 @@ const prensa = [
     flex: 1 1 0;
     min-inline-size: 0;
     padding-block-start: var(--pt);
-    transition: flex-grow var(--d-tira) var(--e-back);
+    transition: flex-grow var(--d-tira) var(--e-expandir);
     outline: none;
   }
 
@@ -156,7 +156,7 @@ const prensa = [
   .columna :global(.retrato) {
     block-size: 348px;
     aspect-ratio: auto;
-    transition: block-size var(--d-tira) var(--e-back);
+    transition: block-size var(--d-tira) var(--e-expandir);
   }
 
   /* Panel: y=376 fijo en las siete variantes — el texto arranca siempre a la
@@ -168,11 +168,14 @@ const prensa = [
     padding: 23px 32px 32px;
     background: var(--c-grey);
     opacity: 0;
-    translate: 0 14px;
+    translate: 0 10px;
     pointer-events: none;
+    /* Al cerrar el panel se va de golpe, para no dejar texto flotando sobre
+       una columna que ya se está encogiendo. Al abrir entra con un pelo de
+       retardo, cuando el ancho ya ha empezado a moverse. */
     transition:
-      opacity calc(var(--d-tira) * 0.55) var(--e-out),
-      translate var(--d-tira) var(--e-back);
+      opacity 120ms var(--e-out),
+      translate 160ms var(--e-expandir);
   }
 
   .panel h3 { font-size: 32px; font-weight: var(--peso-titulo); color: #000; }
@@ -205,6 +208,9 @@ const prensa = [
       opacity: 1;
       translate: 0 0;
       pointer-events: auto;
+      transition:
+        opacity var(--d-tira-panel) var(--e-out) 90ms,
+        translate var(--d-tira-panel) var(--e-expandir) 90ms;
     }
 
     /* La imagen abierta conserva su desfase y toma su alto de variante. */

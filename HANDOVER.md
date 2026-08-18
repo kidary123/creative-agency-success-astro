@@ -436,3 +436,53 @@ contorno para que no quede orla.
 `57:650` se llama "Component 2" pero es el mismo componente que el resto con el
 relleno sobrescrito: **`#8686F2` con el texto en blanco**, no verde. El hover
 sigue siendo el de la variante compartida `38:162` (`#021E46` + `#32E0A5`).
+
+---
+
+## 9. La expansión de la tira iba lenta por una razón que no era la duración
+
+Bajar los 950 ms de Figma no bastaba: medido fotograma a fotograma, el **alto**
+del bloque arrancaba a los 40 ms del hover y el **ancho** no se movía hasta
+**307 ms después**, con el mismo disparador. La duración estaba bien; la
+transición no había empezado.
+
+La causa es la cascada de entrada. En `global.css`, el escalonado usaba
+`transition-delay`:
+
+```css
+[data-animate="stagger"][data-visible] > *:nth-child(4) { transition-delay: 270ms; }
+```
+
+Especificidad **(0,3,0)** — dos selectores de atributo más `:nth-child` — frente
+a **(0,2,0)** de la regla del componente. Gana la de la cascada, y ese
+`transition-delay` **se queda pegado al elemento para siempre**, no solo durante
+la entrada. Así que el hover de esa misma tarjeta arrancaba con 270 ms de
+retraso muerto. Y no era igual en todas: la columna 1 iba a 0 ms y la 7 a
+**540 ms**, que es justo la sensación de "unas responden y otras no".
+
+> **Trampa 14. Un `transition-delay` de entrada contamina todas las
+> transiciones posteriores del elemento.** Si el escalonado se hace con
+> `transition-delay` por `nth-child`, cualquier hover de ese mismo elemento
+> hereda el retraso. Hazlo con `animation` + `animation-delay`, que no toca las
+> transiciones. Síntoma engañoso: parece que la animación es lenta cuando lo
+> que pasa es que todavía no ha empezado.
+
+Medido después del cambio, idéntico en las siete columnas:
+
+| | antes | ahora |
+|---|---|---|
+| retraso hasta arrancar | 267 ms (col 4) · 540 ms (col 7) | **16 ms** (un fotograma) |
+| 90% del recorrido | ~600 ms | **133 ms** |
+| curva | `EASE_IN_AND_OUT_BACK` (retrocede al arrancar) | `cubic-bezier(0.22, 1, 0.36, 1)` |
+
+La duración vive en un solo sitio, `src/styles/tokens.css`:
+
+```css
+--d-tira: 380ms;        /* expansión */
+--d-tira-panel: 240ms;  /* entrada del texto */
+--e-expandir: cubic-bezier(0.22, 1, 0.36, 1);
+```
+
+Es una desviación deliberada del archivo (Figma declara 950 ms con
+`EASE_IN_AND_OUT_BACK`): a ese ancho, el retroceso del *back* se lee como
+pereza. El resto de tiempos del sitio siguen siendo los de Figma.

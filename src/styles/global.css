@@ -131,23 +131,32 @@ input, select, textarea { min-inline-size: 0; inline-size: 100%; }
 [data-animate="zoom"]     { scale: 0.94; }
 [data-animate][data-visible] { opacity: 1; translate: 0 0; clip-path: inset(0 0 0 0); scale: 1; }
 
-/* stagger: los hijos entran en cascada */
-[data-animate="stagger"] { opacity: 1; }
-[data-animate="stagger"] > * {
-  opacity: 0;
-  translate: 0 1.75rem;
-  transition:
-    opacity 0.65s cubic-bezier(0.2, 0.7, 0.2, 1),
-    translate 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+/* stagger: los hijos entran en cascada.
+   Va con ANIMATION y no con transition a propósito. Con transition, el
+   `transition-delay` de la cascada — `[data-animate="stagger"][data-visible] >
+   *:nth-child(n)`, especificidad (0,3,0) — le gana a la regla del propio
+   componente (0,2,0) y se queda pegado al elemento PARA SIEMPRE. Resultado: el
+   hover de esa misma tarjeta arrancaba con 270 ms de retraso y parecía que la
+   animación fuese lenta cuando en realidad ni había empezado.
+   `animation-delay` no toca las transiciones, así que no contamina nada. */
+@keyframes entrar-cascada {
+  from { opacity: 0; translate: 0 1.75rem; }
+  to   { opacity: 1; translate: 0 0; }
 }
-[data-animate="stagger"][data-visible] > * { opacity: 1; translate: 0 0; }
-[data-animate="stagger"][data-visible] > *:nth-child(1) { transition-delay: 0ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(2) { transition-delay: 90ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(3) { transition-delay: 180ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(4) { transition-delay: 270ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(5) { transition-delay: 360ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(6) { transition-delay: 450ms; }
-[data-animate="stagger"][data-visible] > *:nth-child(7) { transition-delay: 540ms; }
+
+[data-animate="stagger"] { opacity: 1; }
+[data-animate="stagger"] > * { opacity: 0; }
+
+[data-animate="stagger"][data-visible] > * {
+  animation: entrar-cascada 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+[data-animate="stagger"][data-visible] > *:nth-child(1) { animation-delay: 0ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(2) { animation-delay: 90ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(3) { animation-delay: 180ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(4) { animation-delay: 270ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(5) { animation-delay: 360ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(6) { animation-delay: 450ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(7) { animation-delay: 540ms; }
 
 @media (prefers-reduced-motion: reduce) {
   *,
