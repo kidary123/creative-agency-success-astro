@@ -260,3 +260,41 @@ que está bien.
 Sin scroll horizontal en 390 / 768 / 1440. Alturas por sección a 1440:
 hero 572 · historias 1235 · confianza 744 · servicios 1084 · testimonios 445 ·
 metodo 1025 · recursos 919 · cta-final **520** (el original: 520 exactos).
+
+---
+
+## 6. Despliegue
+
+**No se pudo hacer desde el entorno de reconstrucción.** El mismo proxy que
+bloquea `figma.com` bloquea también `vercel.com` y `api.vercel.com`, y la
+sesión de GitHub está limitada al repositorio que tiene configurado
+(`This GitHub API path is not available: sessions are bound to their configured
+repositories`), así que no se pudo crear uno nuevo.
+
+El repositorio local **ya está inicializado y con el primer commit hecho** en la
+rama `main`. Desde tu máquina:
+
+```bash
+# 1. repo
+gh repo create creative-agency-success-astro --public --source=. --remote=origin --push
+#    (o crearlo a mano en github.com y luego:)
+#    git remote add origin git@github.com:<usuario>/creative-agency-success-astro.git
+#    git push -u origin main
+
+# 2. Vercel — detecta Astro solo, sin configuración
+npm i -g vercel
+vercel login
+vercel link --yes
+vercel --prod
+```
+
+O más simple: importar el repo desde el panel de Vercel. Detecta Astro
+automáticamente (`npm run build` → `dist/`) y deja el auto-deploy en cada push.
+
+Los `.bat` de la raíz (`DEV.bat`, `DEPLOY-ME.bat`, `LOGIN-VERCEL.bat`,
+`GET-ASSETS.bat`) siguen sirviendo en Windows una vez hecho el `vercel login`.
+
+> `GET-ASSETS.bat` / `npm run assets` **no funcionará** mientras las URLs
+> firmadas del manifest estén caducadas (7 días) o si tu red también bloquea
+> `figma.com`. Para las fotos, la vía fiable es exportarlas a mano desde Figma
+> a `public/assets/fotos/` con los ids de la tabla de la sección 1.
