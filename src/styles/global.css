@@ -1,0 +1,162 @@
+@import "@fontsource-variable/hanken-grotesk/index.css";
+@import "./tokens.css";
+
+/* ---------- reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  min-block-size: 100svh;
+  font-family: var(--f-texto);
+  font-size: var(--t-cuerpo);
+  color: var(--c-tinta);
+  background: var(--c-papel);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  /* Contención del desbordamiento horizontal, pero SIN ocultar la causa:
+     si aparece scroll lateral, el culpable casi siempre es un <input>
+     (ver abajo), no lo que se ve desbordado. */
+  overflow-x: clip;
+}
+
+img, svg, video, canvas { display: block; max-inline-size: 100%; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+
+a { color: inherit; text-decoration: none; }
+
+/* Arboria Medium en todos los titulares del original; solo el h1 va en Bold. */
+h1 { font-weight: 700; line-height: 1.12; letter-spacing: -0.015em; }
+h2, h3, h4 { font-weight: var(--peso-titulo); line-height: 1.2; }
+
+/* ---------- trampa 8 ----------
+   El mínimo automático de una pista de rejilla es el min-content de su
+   contenido, y un <input> trae un ancho preferido del navegador (~20
+   caracteres) que ninguna regla de width le quita. En un footer eso infla la
+   pista a 413px en una pantalla de 390 y da scroll horizontal a TODA la
+   página. minmax(0, 1fr) + min-inline-size: 0 lo desarma. */
+input, select, textarea { min-inline-size: 0; inline-size: 100%; }
+
+.rejilla { display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr)); }
+
+/* ---------- contenedor del lienzo ---------- */
+.envoltorio {
+  inline-size: min(100% - var(--margen) * 2, var(--ancho-max));
+  margin-inline: auto;
+}
+
+/* ---------- tipos reutilizables ---------- */
+.h-seccion {
+  font-size: var(--t-h2);
+  font-weight: var(--peso-titulo);
+  text-align: center;
+  color: var(--c-azul);
+}
+
+.intro {
+  font-size: var(--t-intro);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--c-dgrey);
+  margin-inline: auto;
+}
+
+/* ---------- botón principal (Component 1 / 38:164) ----------
+   Reposo #32E0A5 sobre texto #021E46; hover invierte. Figma: SMART_ANIMATE
+   350ms EASE_IN_AND_OUT_BACK. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 195px;
+  block-size: 59px;
+  padding: 10px 10px 14px;
+  font-size: var(--t-boton);
+  font-weight: 500;
+  color: var(--c-azul);
+  background: var(--c-verde);
+  transition:
+    background-color var(--d-boton) var(--e-back),
+    color var(--d-boton) var(--e-back);
+}
+
+.boton:hover,
+.boton:focus-visible {
+  background: var(--c-azul);
+  color: var(--c-verde);
+}
+
+/* ---------- botón secundario (Component 8 / 82:278) ---------- */
+.boton-sec {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 135px;
+  block-size: 51px;
+  font-size: var(--t-cuerpo);
+  font-weight: 500;
+  color: var(--c-white);
+  background: var(--c-azul);
+  transition:
+    background-color var(--d-boton-sec) var(--e-out),
+    color var(--d-boton-sec) var(--e-out);
+}
+
+.boton-sec:hover,
+.boton-sec:focus-visible {
+  background: var(--c-white);
+  color: var(--c-verde);
+}
+
+/* ---------- animación ---------- */
+[data-animate] {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    clip-path 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    scale 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--retardo, 0ms);
+}
+
+[data-animate="fade-up"]  { translate: 0 2rem; }
+[data-animate="reveal"]   { clip-path: inset(0 0 100% 0); }
+[data-animate="zoom"]     { scale: 0.94; }
+[data-animate][data-visible] { opacity: 1; translate: 0 0; clip-path: inset(0 0 0 0); scale: 1; }
+
+/* stagger: los hijos entran en cascada */
+[data-animate="stagger"] { opacity: 1; }
+[data-animate="stagger"] > * {
+  opacity: 0;
+  translate: 0 1.75rem;
+  transition:
+    opacity 0.65s cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-animate="stagger"][data-visible] > * { opacity: 1; translate: 0 0; }
+[data-animate="stagger"][data-visible] > *:nth-child(1) { transition-delay: 0ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(2) { transition-delay: 90ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(3) { transition-delay: 180ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(4) { transition-delay: 270ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(5) { transition-delay: 360ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(6) { transition-delay: 450ms; }
+[data-animate="stagger"][data-visible] > *:nth-child(7) { transition-delay: 540ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-animate],
+  [data-animate] > * { opacity: 1; translate: 0 0; clip-path: none; scale: 1; }
+}

@@ -1,0 +1,134 @@
+---
+/**
+ * "Paths To Success For Creative Agency Owners" (152:292, banda #8686F2 de
+ * 520px) con el arte Component 33 (233:1888) a la izquierda.
+ *
+ * El arte son dos capas: la foto recortada por una máscara vectorial
+ * (233:1874) y el trazo verde (233:1876).
+ *
+ * HOVER (variante 233:1886, 500ms EASE_OUT): el conjunto pasa de 501.31×446 a
+ * 527.57×467.52 —escala 1.0524 exacta en los dos ejes— y además la máscara
+ * gira +4.04° y el trazo −3.42°.
+ */
+import Foto from "../Foto.astro";
+---
+
+<section class="cta-final" id="cta-final">
+  <div class="envoltorio rejilla">
+    <div class="arte" data-animate="zoom">
+      <div class="pieza">
+        <div class="mascara">
+          <Foto id="cta-foto" alt="Propietaria de agencia creativa" ratio="628 / 422" ratioMovil="628 / 422" />
+        </div>
+        <img class="trazo" src="/assets/cta-trazo.svg" alt="" />
+      </div>
+    </div>
+
+    <div class="texto">
+      <h2 data-animate="fade-up">Paths To Success For Creative Agency Owners</h2>
+      <p data-animate="fade-up" style="--retardo:110ms">
+        It doesn’t matter if you’re just starting out or have been in business for
+        years, you are sitting on a million-dollar business already. You just have to
+        unlock it. Schedule a profitability accelerator call now and we will help you
+        create a custom step-by-step plan.
+      </p>
+      <a class="boton claro" href="#contacto" data-animate="fade-up" style="--retardo:220ms">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    background: var(--c-morado);
+    padding-block: 31px 35px;
+    overflow: hidden;
+  }
+
+  .rejilla {
+    display: grid;
+    grid-template-columns: minmax(0, 510fr) minmax(0, 612fr);
+    gap: 118px;
+    align-items: center;
+  }
+
+  /* ---- arte 233:1890 (510 × 454) ---- */
+  .arte { inline-size: 100%; }
+
+  .pieza {
+    position: relative;
+    aspect-ratio: 510 / 454;
+    transition: scale var(--d-cta) var(--e-out);
+  }
+
+  .arte:hover .pieza { scale: 1.0524; }
+
+  /* Mask group 233:1877: y=46.67 de 446 → 10.46%, alto 390.04 → 87.45%. */
+  .mascara {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 10.46%;
+    block-size: 87.45%;
+    -webkit-mask-image: url("/assets/cta-mascara.svg");
+    mask-image: url("/assets/cta-mascara.svg");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    transition: rotate var(--d-cta) var(--e-out);
+  }
+
+  .mascara :global(.foto) {
+    block-size: 100%;
+    aspect-ratio: auto;
+    background: #ffffff29;
+  }
+
+  .arte:hover .mascara { rotate: 4.04deg; }
+
+  /* Vector (Stroke) 233:1876: x=71 de 501.31 → 14.16%, ancho 374 → 74.60%. */
+  .trazo {
+    position: absolute;
+    inset-inline-start: 14.16%;
+    inset-block-start: 0;
+    inline-size: 74.60%;
+    block-size: 100%;
+    object-fit: fill;
+    transition: rotate var(--d-cta) var(--e-out);
+  }
+
+  .arte:hover .trazo { rotate: -3.42deg; }
+
+  /* ---- texto ---- */
+  .texto h2 {
+    font-size: var(--t-h2);
+    font-weight: var(--peso-titulo);
+    line-height: 1.1333;
+    color: var(--c-grey);
+    max-inline-size: 480px;
+  }
+
+  .texto p {
+    margin-block-start: 26px;
+    font-size: var(--t-intro);
+    line-height: 28.5px;
+    color: var(--c-white);
+    max-inline-size: 612px;
+  }
+
+  .texto .boton { margin-block-start: 26px; }
+
+  /* Sobre el morado, el reposo verde/azul se mantiene pero el hover va a
+     blanco para no perder contraste contra el fondo. */
+  .boton.claro:hover,
+  .boton.claro:focus-visible { background: var(--c-white); color: var(--c-morado); }
+
+  @media (max-width: 900px) {
+    .rejilla { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .cta-final { padding-block: 60px 64px; }
+    .texto h2, .texto p { max-inline-size: none; }
+    .arte { max-inline-size: 420px; margin-inline: auto; }
+    .arte:hover .pieza { scale: 1; }
+    .arte:hover .mascara { rotate: 0deg; }
+    .arte:hover .trazo { rotate: 0deg; }
+  }
+</style>

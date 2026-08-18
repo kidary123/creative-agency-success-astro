@@ -1,0 +1,106 @@
+---
+/**
+ * Imagen raster del diseño.
+ *
+ * El proxy del contenedor bloquea figma.com, así que los raster no se pudieron
+ * descargar en la fase 4 (los vectores sí, vía exportAsync del plugin). Este
+ * componente resuelve el archivo en tiempo de construcción: si ya está en
+ * public/assets/fotos/<id>.(webp|jpg|png) lo pinta, y si no deja un marcador
+ * con la caja EXACTA del diseño, para que el layout sea correcto ahora y la
+ * sustitución posterior no mueva nada.
+ *
+ * Lleva <style> propio a propósito: Astro solo añade data-astro-cid-… a los
+ * componentes con estilos, y sin él las reglas de posicionamiento que escriba
+ * el padre no casan con nada. (Trampa 1.)
+ */
+import fs from "node:fs";
+import path from "node:path";
+
+interface Props {
+  id: string;
+  alt: string;
+  ratio?: string;
+  ratioMovil?: string;
+  radio?: string;
+  posicion?: string;
+  carga?: "lazy" | "eager";
+  clase?: string;
+}
+
+const {
+  id,
+  alt,
+  ratio = "auto",
+  ratioMovil,
+  radio = "0",
+  posicion = "center",
+  carga = "lazy",
+  clase = "",
+} = Astro.props;
+
+const dir = path.join(process.cwd(), "public", "assets", "fotos");
+const ext = ["webp", "jpg", "jpeg", "png", "avif"].find((e) =>
+  fs.existsSync(path.join(dir, `${id}.${e}`))
+);
+const src = ext ? `/assets/fotos/${id}.${ext}` : null;
+---
+
+<figure
+  class:list={["foto", { falta: !src }, clase]}
+  style={`--ratio:${ratio}; --ratio-movil:${ratioMovil ?? ratio}; --radio:${radio}; --pos:${posicion};`}
+  data-foto={id}
+>
+  {
+    src ? (
+      <img src={src} alt={alt} loading={carga} decoding="async" />
+    ) : (
+      <span class="marcador" aria-label={alt} role="img" />
+    )
+  }
+</figure>
+
+<style>
+  .foto {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radio);
+    aspect-ratio: var(--ratio-movil);
+    background: var(--c-grey);
+  }
+
+  .foto img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--pos);
+  }
+
+  /* Marcador: ocupa la caja exacta del diseño mientras falta el raster. */
+  .marcador {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    background:
+      linear-gradient(135deg, #e8e2dd 0%, #f4f1ef 45%, #dfe9ec 100%);
+  }
+
+  .marcador::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0 11px,
+        rgba(2, 30, 70, 0.045) 11px 22px
+      );
+  }
+
+  /* La proporción de escritorio solo a partir del breakpoint: un retrato
+     pensado para un panel cerrado hace que la tarjeta mida más que la
+     pantalla en móvil. (Trampa 6.) */
+  @media (min-width: 62rem) {
+    .foto { aspect-ratio: var(--ratio); }
+  }
+</style>

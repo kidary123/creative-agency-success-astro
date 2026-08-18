@@ -1,0 +1,191 @@
+---
+/**
+ * Testimonials (85:504 · panel #F4F1EF a sangre, 1502×555).
+ *
+ * Component 10 (85:618) trae seis variantes. En Figma hay dos disparadores:
+ * AFTER_TIMEOUT → SMART_ANIMATE 500ms, y ON_CLICK sobre la flecha →
+ * SMART_ANIMATE 700ms. Ambos con EASE_IN_AND_OUT_BACK. Se reproducen tal cual.
+ */
+const citas = [
+  "”Robert… when I started with your group I would have BALKED at the idea of a $15K/mo retainer. We typically signed $5k at that time and were pretty amped when that happened. This week I signed an existing client into a $15K retainer, and have two others on $10K, and I didn’t even flinch. The mindset shift has been pretty dramatic for me” - Name",
+  "“Just sold a $22K/year contract for Web + SEO   this ones significant because it's the first official contract within our MRR model that went from start to finish using @Robert Patin’s exact sales model!“ - Name",
+  "“We just confirmed a new branding project today using our new Blueprint pricing model! Which is 25% more than we would have normally charged! Thank you“ - Name",
+  "“Ran the numbers and we doubled our revenue from Jan => Feb. and are on track to double revenue again in March“ - Name",
+  "“We landed a $50K deal today that I’ve been nurturing for a while. AND my team landed a $3k project on their own. I. did. nothing. on that one.“ - Name",
+  "“Landed and onboarded a $20k project while I was skiing with my kid - Name",
+];
+---
+
+<section class="testimonios" id="testimonios">
+  <div class="envoltorio">
+    <h2 class="h-seccion" data-animate="fade-up">Testimonials</h2>
+
+    <div class="carrusel" data-carrusel data-animate="fade-up" style="--retardo:120ms">
+      <span class="comilla" aria-hidden="true">“</span>
+
+      <div class="pista">
+        {citas.map((c, i) => (
+          <blockquote class="cita" data-cita data-activa={i === 0 ? "" : undefined}>
+            <p>{c}</p>
+          </blockquote>
+        ))}
+      </div>
+
+      <button class="flecha izq" type="button" data-ir="-1" aria-label="Testimonio anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 L7 12 L15 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="flecha der" type="button" data-ir="1" aria-label="Testimonio siguiente">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 L17 12 L9 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="puntos" role="tablist" aria-label="Testimonios">
+        {citas.map((_, i) => (
+          <button class="punto" type="button" role="tab" data-punto={i} aria-selected={i === 0} aria-label={`Testimonio ${i + 1}`}></button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonios {
+    padding-block: 64px 74px;
+    background: var(--c-grey);
+  }
+
+  .carrusel {
+    position: relative;
+    margin-block-start: 32px;
+    min-block-size: 232px;
+    display: grid;
+    place-items: center;
+    padding-inline: 64px;
+  }
+
+  .comilla {
+    position: absolute;
+    inset-block-start: -18px;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    font-size: var(--t-comilla);
+    line-height: 0.995;
+    color: var(--c-white);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .pista {
+    position: relative;
+    inline-size: min(100%, 1030px);
+    min-block-size: 232px;
+    display: grid;
+  }
+
+  .cita {
+    grid-area: 1 / 1;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    translate: 0 12px;
+    pointer-events: none;
+    transition:
+      opacity var(--d-testimonio) var(--e-back),
+      translate var(--d-testimonio) var(--e-back);
+  }
+
+  .cita[data-activa] { opacity: 1; translate: 0 0; pointer-events: auto; }
+
+  .cita p {
+    max-inline-size: 1030px;
+    font-size: var(--t-intro);
+    line-height: 1.72;
+    text-align: center;
+    color: var(--c-azul);
+  }
+
+  .flecha {
+    position: absolute;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    inline-size: 44px;
+    block-size: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--c-azul);
+    background: #ffffff00;
+    transition:
+      background var(--d-nav) var(--e-out),
+      color var(--d-nav) var(--e-out),
+      scale var(--d-nav) var(--e-back);
+  }
+  .flecha svg { inline-size: 24px; block-size: 24px; }
+  .flecha.izq { inset-inline-start: 0; }
+  .flecha.der { inset-inline-end: 0; }
+  .flecha:hover { background: var(--c-white); color: var(--c-verde); scale: 1.1; }
+
+  .puntos {
+    position: absolute;
+    inset-block-end: -22px;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    display: flex;
+    gap: 10px;
+  }
+
+  .punto {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background: #021e4633;
+    transition: background var(--d-nav) var(--e-out), scale var(--d-nav) var(--e-back);
+  }
+  .punto[aria-selected="true"] { background: var(--c-verde); scale: 1.35; }
+  .punto:hover { background: var(--c-azul); }
+
+  @media (max-width: 900px) {
+    .carrusel { padding-inline: 0; }
+    .flecha { inset-block-start: auto; inset-block-end: -64px; translate: 0; }
+    .flecha.izq { inset-inline-start: calc(50% - 92px); }
+    .flecha.der { inset-inline-end: calc(50% - 92px); }
+    .testimonios { padding-block-end: 120px; }
+  }
+</style>
+
+<script>
+  const raiz = document.querySelector<HTMLElement>("[data-carrusel]");
+
+  if (raiz) {
+    const citas = [...raiz.querySelectorAll<HTMLElement>("[data-cita]")];
+    const puntos = [...raiz.querySelectorAll<HTMLElement>("[data-punto]")];
+    const reducido = matchMedia("(prefers-reduced-motion: reduce)");
+    let i = 0;
+    let reloj: number | undefined;
+
+    const pintar = (n: number) => {
+      i = (n + citas.length) % citas.length;
+      citas.forEach((c, k) => c.toggleAttribute("data-activa", k === i));
+      puntos.forEach((p, k) => p.setAttribute("aria-selected", String(k === i)));
+    };
+
+    // AFTER_TIMEOUT de Figma: avance automático, se detiene al interactuar.
+    const arrancar = () => {
+      if (reducido.matches) return;
+      detener();
+      reloj = window.setInterval(() => pintar(i + 1), 6000);
+    };
+    const detener = () => { if (reloj) clearInterval(reloj); reloj = undefined; };
+
+    raiz.querySelectorAll<HTMLElement>("[data-ir]").forEach((b) =>
+      b.addEventListener("click", () => { pintar(i + Number(b.dataset.ir)); arrancar(); })
+    );
+    puntos.forEach((p, k) => p.addEventListener("click", () => { pintar(k); arrancar(); }));
+
+    raiz.addEventListener("pointerenter", detener);
+    raiz.addEventListener("pointerleave", arrancar);
+    raiz.addEventListener("focusin", detener);
+
+    arrancar();
+  }
+</script>

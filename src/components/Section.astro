@@ -1,0 +1,34 @@
+---
+/**
+ * Contenedor de sección con el gancho de animación.
+ *
+ * Toda animación del sitio pasa por [data-animate]. Es también lo único que el
+ * script de verificación congela para capturar: una transición escrita suelta
+ * en CSS sobrevive al congelado y sale movida en la captura.
+ */
+interface Props {
+  id: string;
+  animar?: "fade-up" | "reveal" | "stagger" | false;
+  retardo?: number;
+  clase?: string;
+}
+
+const { id, animar = "fade-up", retardo = 0, clase = "" } = Astro.props;
+---
+
+<section
+  id={id}
+  data-seccion={id}
+  data-animate={animar || undefined}
+  style={retardo ? `--retardo:${retardo}ms` : undefined}
+  class:list={["seccion", clase]}
+>
+  <slot />
+</section>
+
+<style>
+  .seccion {
+    position: relative;
+    padding-block: var(--s-seccion, clamp(4rem, 10vw, 9rem));
+  }
+</style>

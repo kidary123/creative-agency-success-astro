@@ -1,0 +1,72 @@
+---
+/**
+ * Logo CAS (Component 4 / 62:8).
+ *
+ * El hover no es un crossfade: en Figma solo cambian dos rellenos —
+ * escudo #021E46 → #FFFFFF y wordmark #FFFFFF → #021E46 — mientras el borde
+ * degradado (#32E0A5 → #8686F2) se queda igual. SMART_ANIMATE 700ms
+ * EASE_IN_AND_OUT_BACK.
+ *
+ * Por eso el SVG va EN LÍNEA (un <img> no hereda variables CSS) y los dos
+ * rellenos se leen de custom properties.
+ */
+import fs from "node:fs";
+import path from "node:path";
+
+interface Props {
+  ancho?: number;
+  href?: string;
+  clase?: string;
+  etiqueta?: string;
+}
+
+const { ancho = 97, href = "/", clase = "", etiqueta = "Creative Agency Success" } = Astro.props;
+
+const bruto = fs.readFileSync(
+  path.join(process.cwd(), "public", "assets", "logo-cas.svg"),
+  "utf8"
+);
+
+// Los ids del degradado se mantienen únicos por instancia para que dos logos
+// en la misma página (cabecera y pie) no se pisen la definición.
+const uid = Math.random().toString(36).slice(2, 8);
+const svg = bruto
+  .replace(/cas_borde/g, `cas_borde_${uid}`)
+  .replace(/<svg /, '<svg aria-hidden="true" focusable="false" ')
+  .replace(/ width="212" height="207"/, "");
+---
+
+<a href={href} class:list={["logo", clase]} style={`--ancho:${ancho}px`} aria-label={etiqueta}>
+  <Fragment set:html={svg} />
+</a>
+
+<style>
+  .logo {
+    display: block;
+    inline-size: var(--ancho);
+    flex: none;
+    --escudo: var(--c-azul);
+    --palabra: var(--c-white);
+  }
+
+  .logo :global(svg) {
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  .logo :global(.escudo) {
+    fill: var(--escudo);
+    transition: fill var(--d-logo) var(--e-back);
+  }
+
+  .logo :global(.palabra) {
+    fill: var(--palabra);
+    transition: fill var(--d-logo) var(--e-back);
+  }
+
+  .logo:hover,
+  .logo:focus-visible {
+    --escudo: var(--c-white);
+    --palabra: var(--c-azul);
+  }
+</style>

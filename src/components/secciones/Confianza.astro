@@ -1,0 +1,126 @@
+---
+/**
+ * "Ready to find your tribe?" / Collective Confidence.
+ * Titular 42:73, subtítulo 42:74, vídeo 89:441 (922×492, radio 10) con el
+ * triángulo de play 89:446, y las cuatro cifras (135:108…135:111) en columna
+ * a la derecha, x=1085, w=299, separadas 140px.
+ */
+import Foto from "../Foto.astro";
+
+const cifras = [
+  { v: "$ 3,000,000", l: "Revenue Added In Just 90 Days" },
+  { v: "$ 1,500,000", l: "Profit Per Partner Per Year" },
+  { v: "897%", l: "Revenue Increase in 9 Months" },
+  { v: "83%", l: "Efficiency Gains" },
+];
+---
+
+<section class="confianza" id="confianza">
+  <div class="envoltorio">
+    <h2 class="h-seccion" data-animate="fade-up">Ready to find your tribe?</h2>
+    <p class="sub" data-animate="fade-up" style="--retardo:110ms">Collective Confidence</p>
+
+    <div class="cuerpo">
+      <button class="video" type="button" aria-label="Reproducir vídeo" data-animate="zoom">
+        <Foto id="video-poster" alt="Comunidad de propietarios de agencias" ratio="922 / 492" ratioMovil="16 / 10" radio="10px" />
+        <span class="play">
+          <img src="/assets/play.svg" alt="" width="83" height="79" />
+        </span>
+      </button>
+
+      <dl class="cifras" data-animate="stagger">
+        {cifras.map((c) => (
+          <div class="cifra">
+            <dt>{c.v}</dt>
+            <dd>{c.l}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .confianza { padding-block: 118px 0; }
+
+  .sub {
+    margin-block-start: 8px;
+    font-size: var(--t-h3);
+    font-weight: 500;
+    text-align: center;
+    color: var(--c-azul);
+  }
+
+  .cuerpo {
+    margin-block-start: 46px;
+    display: grid;
+    grid-template-columns: minmax(0, 922fr) minmax(0, 299fr);
+    gap: 61px;
+    align-items: start;
+  }
+
+  /* ---- vídeo ---- */
+  .video {
+    position: relative;
+    display: block;
+    inline-size: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .video :global(.foto) { transition: scale 900ms var(--e-out); }
+  .video:hover :global(.foto),
+  .video:focus-visible :global(.foto) { scale: 1.035; }
+
+  .video::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #021e4600;
+    transition: background 500ms var(--e-out);
+  }
+  .video:hover::after { background: #021e461f; }
+
+  .play {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    z-index: 1;
+    inline-size: 9%;
+    max-inline-size: 83px;
+    filter: drop-shadow(0 6px 18px #0000002e);
+    transition: scale 450ms var(--e-back);
+  }
+  .play img { inline-size: 100%; block-size: auto; }
+  .video:hover .play,
+  .video:focus-visible .play { scale: 1.14; }
+
+  /* ---- cifras ---- */
+  .cifras { display: grid; gap: 41px; padding-block-start: 4px; }
+
+  /* 85:667 — 32px Medium #8686F2 (no azul). */
+  .cifra dt {
+    font-size: var(--t-cifra);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--c-morado);
+  }
+
+  /* 85:668 — 20px Book #021E46. */
+  .cifra dd {
+    margin: 8px 0 0;
+    max-inline-size: 205px;
+    font-size: var(--t-cifra-pie);
+    line-height: 1.28;
+    color: var(--c-azul);
+  }
+
+  @media (max-width: 900px) {
+    .confianza { padding-block-start: 72px; }
+    .cuerpo { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+    .cifra dd { max-inline-size: none; }
+    .play { inline-size: 16%; }
+  }
+</style>

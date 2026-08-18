@@ -1,0 +1,187 @@
+---
+/**
+ * Cabecera (Group 139 / 640:3463).
+ *
+ * Banda #F4F1EF de 183px con sombra 0 4px 20px -2px #00000012. Los enlaces
+ * cambian de color en hover con SMART_ANIMATE 300ms EASE_IN_AND_OUT_BACK
+ * (variantes 630:2765 → 630:2763 …). El logo, 700ms (ver Logo.astro).
+ */
+import Logo from "./Logo.astro";
+
+const enlaces = [
+  { t: "Sucess Stories", h: "#historias" },
+  { t: "Project Page", h: "#servicios" },
+  { t: "Resources", h: "#recursos" },
+  { t: "Services", h: "#servicios" },
+  { t: "About", h: "#confianza" },
+  { t: "Podcast", h: "#recursos" },
+  { t: "Contact", h: "#cta-final" },
+];
+---
+
+<header class="cabecera" data-cabecera>
+  <div class="banda">
+    <Logo ancho={97} clase="marca" />
+
+    <nav class="menu" aria-label="Principal">
+      <ul>
+        {enlaces.map((e) => (
+          <li><a href={e.h}>{e.t}</a></li>
+        ))}
+      </ul>
+
+      <button class="buscar" type="button" aria-label="Buscar">
+        <svg viewBox="0 0 27 28" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="9.2" stroke="currentColor" stroke-width="2.2" />
+          <path d="M17.8 18.4 L25 26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+        </svg>
+      </button>
+    </nav>
+
+    <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="panel" id="menu-movil" hidden>
+    <ul>
+      {enlaces.map((e) => (
+        <li><a href={e.h}>{e.t}</a></li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<style>
+  .cabecera {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+    background: var(--c-grey);
+    box-shadow: var(--sombra);
+  }
+
+  .banda {
+    inline-size: min(100% - 40px, 1440px);
+    margin-inline: auto;
+    min-block-size: 119px;
+    padding-inline: 60px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .marca { margin-inline-end: auto; }
+
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 49px;
+  }
+
+  .menu ul {
+    display: flex;
+    align-items: center;
+    gap: 49px;
+    list-style: none;
+    padding: 0;
+  }
+
+  .menu a {
+    position: relative;
+    font-size: var(--t-nav);
+    font-weight: 500;
+    color: var(--c-azul);
+    white-space: nowrap;
+    transition: color var(--d-nav) var(--e-back);
+  }
+
+  /* El subrayado acompaña al cambio de color del hover de la variante. */
+  .menu a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -6px;
+    block-size: 2px;
+    background: currentColor;
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale var(--d-nav) var(--e-back);
+  }
+
+  .menu a:hover,
+  .menu a:focus-visible { color: var(--c-verde); }
+  .menu a:hover::after,
+  .menu a:focus-visible::after { scale: 1 1; }
+
+  .buscar {
+    inline-size: 27px;
+    block-size: 28px;
+    color: var(--c-azul);
+    transition: color var(--d-nav) var(--e-back), rotate var(--d-nav) var(--e-back);
+  }
+  .buscar svg { inline-size: 100%; block-size: 100%; }
+  .buscar:hover { color: var(--c-verde); rotate: -12deg; }
+
+  /* ---- móvil ---- */
+  .hamburguesa {
+    display: none;
+    inline-size: 28px;
+    block-size: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hamburguesa span {
+    display: block;
+    block-size: 2px;
+    background: var(--c-azul);
+    transition: translate 0.3s var(--e-back), rotate 0.3s var(--e-back), opacity 0.2s;
+  }
+  .hamburguesa[aria-expanded="true"] span:nth-child(1) { translate: 0 9px; rotate: 45deg; }
+  .hamburguesa[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .hamburguesa[aria-expanded="true"] span:nth-child(3) { translate: 0 -9px; rotate: -45deg; }
+
+  .panel {
+    background: var(--c-grey);
+    border-block-start: 1px solid #0000000f;
+  }
+  .panel ul { list-style: none; padding: 8px var(--margen) 24px; }
+  .panel a {
+    display: block;
+    padding-block: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--c-azul);
+  }
+  .panel a:hover { color: var(--c-verde); }
+
+  @media (max-width: 1200px) {
+    .banda { padding-inline: 24px; min-block-size: 92px; }
+    .menu ul { gap: 26px; }
+    .menu { gap: 26px; }
+    .menu a { font-size: 14px; }
+  }
+
+  @media (max-width: 900px) {
+    .menu { display: none; }
+    .hamburguesa { display: flex; }
+    .banda { inline-size: 100%; padding-inline: var(--margen); }
+  }
+</style>
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>(".hamburguesa");
+  const panel = document.querySelector<HTMLElement>("#menu-movil");
+
+  boton?.addEventListener("click", () => {
+    const abierto = boton.getAttribute("aria-expanded") === "true";
+    boton.setAttribute("aria-expanded", String(!abierto));
+    if (panel) panel.hidden = abierto;
+  });
+
+  panel?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).tagName !== "A") return;
+    boton?.setAttribute("aria-expanded", "false");
+    panel.hidden = true;
+  });
+</script>

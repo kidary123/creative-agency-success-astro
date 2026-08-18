@@ -1,0 +1,284 @@
+{
+  "fileKey": "jXvZyzTAejZDdFwKlHIScm",
+  "rootNode": "21:7",
+  "nombreRoot": "Desktop",
+  "lienzo": { "w": 1440, "h": 7235 },
+  "extraidoEl": "2026-08-18T10:40:00Z",
+  "nota": "Los assets NO se descargaron por URL: el proxy del contenedor bloquea figma.com. Todos los vectores se exportaron con use_figma vía exportAsync({format:'SVG_STRING'}). Los raster siguen pendientes (ver 'rasterPendientes').",
+
+  "tokens": {
+    "color": {
+      "grey": "#F4F1EF",
+      "white": "#FFFFFF",
+      "dark blue": "#021E46",
+      "dgrey": "#4D4D4D",
+      "purple": "#8686F2",
+      "green": "#32E0A5",
+      "_no_variable": {
+        "teal-claro": "#CFE3E8",
+        "teal-clarisimo": "#E4F7FC",
+        "beige-hero": "#F0E8E3",
+        "aro-rueda": "#C4C4C4 @60%",
+        "hero-azul": "#1A759E",
+        "hero-morado": "#7D78D9",
+        "hero-verde": "#33E0A6"
+      }
+    },
+    "sombra": "0 4px 20px -2px rgba(0,0,0,0.07)",
+    "gradienteLogo": "linear-gradient(90deg, #32E0A5 0%, #8686F2 100%)"
+  },
+
+  "tipografia": [
+    {
+      "familia": "Arboria",
+      "licenciada": false,
+      "estilos": ["Book (400)", "Medium (500)", "Bold (700)"],
+      "sustituta": "Hanken Grotesk Variable (@fontsource-variable/hanken-grotesk, self-hosted)",
+      "razon": "Geométrica-humanista con 'a' de dos pisos y terminaciones rectas, es el equivalente libre más cercano a Arboria. Se auto-hospeda para no depender de Google Fonts en runtime."
+    }
+  ],
+
+  "escalaTipografica": {
+    "h1-hero": { "px": 55, "peso": 700, "nodo": "175:447" },
+    "h2-seccion": { "px": 45, "peso": 700, "nodo": "42:70" },
+    "h3-tarjeta": { "px": 32, "peso": 700, "nodo": "57:633" },
+    "cifra": { "px": 40, "peso": 700, "nodo": "85:667" },
+    "intro": { "px": 20, "peso": 400, "lh": 30, "nodo": "42:71" },
+    "cuerpo": { "px": 16, "peso": 400, "nodo": "34:3" },
+    "nav": { "px": 16, "peso": 500, "nodo": "I640:3463;630:2822;630:2662" },
+    "boton": { "px": 20, "peso": 500, "nodo": "I38:168;38:159" }
+  },
+
+  "easings": {
+    "EASE_IN_AND_OUT_BACK": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+    "EASE_OUT": "cubic-bezier(0, 0, 0.58, 1)"
+  },
+
+  "secciones": [
+    {
+      "orden": 1, "nombre": "nav", "nodo": "640:3463", "yTitular": 0, "altura": 139,
+      "fondo": "#F4F1EF (banda 183px) sobre blanco, sombra 0 4px 20px -2px #00000012",
+      "enlaces": ["Sucess Stories", "Project Page", "Resources", "Services", "About", "Podcast", "Contact"],
+      "capas": [{ "nombre": "logo", "nodo": "62:6", "caja": { "x": 110, "y": 12, "w": 97, "h": 95 }, "asset": "logo-cas.svg" }],
+      "variantes": [
+        { "que": "enlace nav", "reposo": "630:2765", "hover": "630:2763", "cambia": ["color"], "dur": 300, "easing": "EASE_IN_AND_OUT_BACK" },
+        { "que": "logo", "reposo": "62:6", "hover": "138:241", "cambia": ["escudo #021E46→#FFFFFF", "wordmark #FFFFFF→#021E46"], "dur": 700, "easing": "EASE_IN_AND_OUT_BACK" }
+      ],
+      "assets": ["logo-cas.svg"]
+    },
+    {
+      "orden": 2, "nombre": "hero", "yTitular": 308,
+      "fondo": { "nodo": "82:49", "color": "#F4F1EF", "caja": { "y": 100, "h": 596 } },
+      "titular": { "nodo": "175:447", "texto": "Your Agency Vision Made Real", "caja": { "x": 95, "y": 308, "w": 574, "h": 158 } },
+      "parrafo": { "nodo": "34:3", "caja": { "x": 99, "y": 479, "w": 475, "h": 134 } },
+      "cta": { "nodo": "38:168", "caja": { "x": 100, "y": 656, "w": 195, "h": 59 } },
+      "pie": { "nodo": "42:65", "texto": "You scale your agency. We simplify your life.", "caja": { "x": 775, "y": 715, "w": 498 } },
+      "arte": {
+        "nodo": "1295:1833", "caja": { "x": 747, "y": 257, "w": 579.614, "h": 438 },
+        "capas": [
+          { "nombre": "formas", "nodo": "1295:1549", "inset": { "x": 15.18, "y": 7.08, "w": 72.12, "h": 92.92 }, "rotacion": 0, "asset": "hero-formas.svg" },
+          { "nombre": "retrato", "nodo": "1295:1565", "inset": { "x": 17.77, "y": 16.67, "w": 66.94, "h": 83.33 }, "raster": "hero-retrato" }
+        ],
+        "etiquetas": [
+          { "t": "Purpose",    "inset": { "x": 44.10, "y": 0,     "r": 42.59, "b": 95.27 } },
+          { "t": "Confidence", "inset": { "x": 83.61, "y": 23.74, "r": 0,     "b": 72.15 }, "peso": 700, "color": "#021E46" },
+          { "t": "Passion",    "inset": { "x": 7.08,  "y": 23.41, "r": 81.30, "b": 71.91 } },
+          { "t": "Control",    "inset": { "x": 88.95, "y": 64.03, "r": 0.04,  "b": 31.18 } },
+          { "t": "Fulfilment", "inset": { "x": 0,     "y": 63.54, "r": 87.87, "b": 31.78 } },
+          { "t": "Freedom",    "inset": { "x": 3.56,  "y": 90.87, "r": 81.26, "b": 4.34 } },
+          { "t": "Growth",     "inset": { "x": 79.21, "y": 91.88, "r": 9.78,  "b": 3.32 } }
+        ]
+      },
+      "assets": ["hero-formas.svg"]
+    },
+    {
+      "orden": 3, "nombre": "historias", "yTitular": 899,
+      "titular": { "nodo": "42:70", "texto": "The Journey To Your Sucess", "caja": { "x": 99, "y": 899, "w": 1241 } },
+      "parrafo": { "nodo": "42:71", "caja": { "x": 318, "y": 960, "w": 799 } },
+      "tira": {
+        "nodo": "85:488", "reposo": "85:464", "alto": 489,
+        "retratos": 7, "altoRetrato": 348,
+        "paddingTopPorRetrato": [70, 124, 66, 138, 65, 140, 106],
+        "gap": 16,
+        "variantesHover": ["85:457", "85:458", "85:459", "85:460", "85:461", "85:462", "85:463"],
+        "altosHover": [780, 756, 804, 828, 780, 780, 780],
+        "dur": 950, "easing": "EASE_IN_AND_OUT_BACK",
+        "raster": "retrato-1..7"
+      },
+      "featured": {
+        "nodo": "152:124", "titulo": "Featured in", "fondo": "#FFFFFF",
+        "logos": [
+          { "n": "Asset 15@2x", "x": 0,   "y": 21, "w": 149, "h": 40, "raster": "prensa-forbes" },
+          { "n": "Asset 14@2x", "x": 168, "y": 5,  "w": 74,  "h": 73, "raster": "prensa-abc" },
+          { "n": "Asset 11@2x", "x": 258, "y": 0,  "w": 282, "h": 83, "raster": "prensa-entrepreneur" },
+          { "n": "Asset 13@2x", "x": 554, "y": 27, "w": 273, "h": 39, "raster": "prensa-nypost" },
+          { "n": "Asset 12@2x", "x": 845, "y": 27, "w": 210, "h": 42, "raster": "prensa-regexseo" },
+          { "n": "Asset 10@2x", "x": 1083,"y": 26, "w": 158, "h": 52, "raster": "prensa-agencyhighway" }
+        ]
+      }
+    },
+    {
+      "orden": 4, "nombre": "confianza", "yTitular": 2031,
+      "titular": { "nodo": "42:73", "texto": "Ready to find your tribe?", "caja": { "x": 99, "y": 2031, "w": 1241 } },
+      "subtitulo": { "nodo": "42:74", "texto": "Collective Confidence", "caja": { "x": 200, "y": 2088, "w": 1035 } },
+      "video": {
+        "nodo": "89:441", "caja": { "x": 102, "y": 2167, "w": 922, "h": 492 }, "radio": 10,
+        "raster": "video-poster",
+        "play": { "nodo": "89:446", "caja": { "x": 615.06, "y": 2372.95, "w": 82.995, "h": 78.663 }, "asset": "play.svg" }
+      },
+      "cifras": [
+        { "v": "$ 3,000,000", "l": "Revenue Added In Just 90 Days", "y": 2167 },
+        { "v": "$ 1,500,000", "l": "Profit Per Partner Per Year",   "y": 2307 },
+        { "v": "897%",        "l": "Revenue Increase in 9 Months",  "y": 2447 },
+        { "v": "83%",         "l": "Efficiency Gains",              "y": 2587 }
+      ],
+      "cifrasCaja": { "x": 1085, "w": 299 }
+    },
+    {
+      "orden": 5, "nombre": "servicios", "yTitular": 2858,
+      "fondoOnda": { "nodo": "42:72", "y": 2765, "h": 842, "asset": "bg-onda-servicios.svg", "color": "#F4F1EF" },
+      "tarjetas": [
+        {
+          "nodo": "170:425", "titulo": "Agency Accelerator", "insignia": "5 to 6 Figures",
+          "bloqueColor": { "nodo": "53:49", "caja": { "x": 99, "y": 2858, "w": 612, "h": 418 }, "radio": 10 },
+          "banda": { "nodo": "57:631", "caja": { "y": 3274, "h": 76 } },
+          "circulo": { "nodo": "57:640", "caja": { "x": 558, "y": 3169, "w": 130, "h": 130 } },
+          "cuerpo": { "nodo": "57:655", "caja": { "x": 100, "y": 3389, "w": 578, "h": 232 } },
+          "cta": { "nodo": "57:648", "caja": { "x": 100, "y": 3668, "w": 195, "h": 59 } },
+          "arte": {
+            "nodo": "89:175", "caja": { "x": 241, "y": 2880, "w": 318, "h": 373.778 },
+            "capas": [
+              { "nombre": "rayas",    "nodo": "85:783", "asset": "art12-rayas.svg",    "inset": { "x": 23.2026, "y": 23.6565, "w": 51.657,  "h": 57.0708 }, "rotacion": 0 },
+              { "nombre": "contorno", "nodo": "85:816", "asset": "art12-contorno.svg", "inset": { "x": 23.7883, "y": 5.2632,  "w": 51.375,  "h": 89.4206 }, "rotacion": 0 }
+            ],
+            "hover": {
+              "variante": "138:143", "dur": 600, "easing": "EASE_IN_AND_OUT_BACK",
+              "rayas":    { "de": { "x": 0,    "y": 76.88, "w": 316.14, "h": 238.56, "rot": 0 }, "a": { "x": -13.72, "y": 57.99, "w": 343.58, "h": 276.35, "rot": 7.21 } },
+              "contorno": { "de": { "x": 3.58, "y": 0,     "w": 314.42, "h": 373.78, "rot": 0 }, "a": { "x": -17.94, "y": -17.70, "w": 357.47, "h": 409.19, "rot": -6.97 } }
+            }
+          }
+        },
+        {
+          "nodo": "170:423", "titulo": "Scale Partnership", "insignia": "6 to 7 Figures",
+          "bloqueColor": { "nodo": "53:50", "caja": { "x": 728, "y": 2858, "w": 612, "h": 418 }, "radio": 10 },
+          "banda": { "nodo": "57:642", "caja": { "y": 3274, "h": 76 } },
+          "circulo": { "nodo": "57:644", "caja": { "x": 1186, "y": 3169, "w": 130, "h": 130 } },
+          "cuerpo": { "nodo": "57:647", "caja": { "x": 728, "y": 3389, "w": 553, "h": 269 } },
+          "cta": { "nodo": "57:650", "caja": { "x": 728, "y": 3668, "w": 195, "h": 59 } },
+          "arte": {
+            "nodo": "89:220", "caja": { "x": 840, "y": 2902, "w": 386, "h": 341 },
+            "capas": [
+              { "nombre": "masa",     "nodo": "89:211", "asset": "art13-masa.svg",     "inset": { "x": 27.4526, "y": 12.1986, "w": 42.1569, "h": 79.9043 }, "rotacion": 90 },
+              { "nombre": "contorno", "nodo": "89:212", "asset": "art13-contorno.svg", "inset": { "x": 18.3007, "y": 10.5263, "w": 63.0719, "h": 77.7512 }, "rotacion": 90, "sangrado": { "x": 1.00676, "y": 1.0058 } }
+            ],
+            "hover": {
+              "variante": "138:193", "dur": 600, "easing": "EASE_IN_AND_OUT_BACK",
+              "masa":     { "de": { "x": 56, "y": 7, "w": 258, "h": 334, "rot": -90, "fill": "#CFE3E8" }, "a": { "x": 40.10, "y": -4.95, "w": 289.80, "h": 357.90, "rot": -84.32, "fill": "#E4F7FC" } },
+              "contorno": { "de": { "x": 0,  "y": 0, "w": 386, "h": 325, "rot": -90 },                    "a": { "x": -22.44, "y": -27.43, "w": 430.88, "h": 379.85, "rot": -98.74 } }
+            }
+          }
+        }
+      ],
+      "botonSecundario": { "nodo": "82:277", "reposo": { "bg": "#021E46", "texto": "#FFFFFF" }, "hover": { "bg": "#FFFFFF", "texto": "#32E0A5" }, "dur": 300, "easing": "EASE_OUT" }
+    },
+    {
+      "orden": 6, "nombre": "testimonios", "yTitular": 3919,
+      "fondo": { "nodo": "85:504", "caja": { "x": -33, "y": 3855, "w": 1502, "h": 555 } },
+      "titular": { "nodo": "85:514", "texto": "Testimonials", "caja": { "x": 100, "y": 3919, "w": 1241 } },
+      "comilla": { "nodo": "85:507", "caja": { "x": 672.76, "y": 4011, "w": 90, "h": 69 } },
+      "carrusel": { "nodo": "85:643", "caja": { "x": 205, "y": 4100, "w": 1030, "h": 232 }, "variantes": ["85:617", "85:614", "85:613", "85:615", "85:612", "85:616"], "auto": { "dur": 500, "trigger": "AFTER_TIMEOUT" }, "click": { "dur": 700 }, "easing": "EASE_IN_AND_OUT_BACK" }
+    },
+    {
+      "orden": 7, "nombre": "metodo", "yTitular": 4505,
+      "fondoOnda": { "nodo": "57:654", "y": 4405, "h": 1147.92, "asset": "bg-onda-metodo.svg", "color": "#FFFFFF" },
+      "titular": { "nodo": "42:15", "texto": "The Scale Method", "caja": { "x": 99, "y": 4505, "w": 1241 } },
+      "parrafo": { "nodo": "42:16", "caja": { "x": 330, "y": 4566, "w": 779 } },
+      "rueda": {
+        "nodo": "89:304", "caja": { "x": 368, "y": 4692, "w": 680.53, "h": 663.6 },
+        "capas": [
+          { "nombre": "aro-1", "nodo": "89:277", "asset": "rueda-aro-1.svg", "inset": { "x": 0,     "y": 0,     "w": 100,   "h": 100 } },
+          { "nombre": "aro-2", "nodo": "89:278", "asset": "rueda-aro-2.svg", "inset": { "x": 5.64,  "y": 5.83,  "w": 88.71, "h": 88.34 } },
+          { "nombre": "aro-3", "nodo": "89:279", "asset": "rueda-aro-3.svg", "inset": { "x": 12.74, "y": 12.90, "w": 74.53, "h": 74.21 } },
+          { "nombre": "masa",  "nodo": "89:280", "asset": "rueda-masa.svg",  "inset": { "x": 19.40, "y": 11.50, "w": 76.63, "h": 87.03 }, "rotacion": 0 },
+          { "nombre": "foto",  "nodo": "89:281", "inset": { "x": 8.05, "y": 26.78, "w": 83.76, "h": 49.13 }, "raster": "metodo-foto" },
+          { "nombre": "play",  "nodo": "89:322", "asset": "rueda-play.svg",  "inset": { "x": 45.99, "y": 47.32, "w": 8.08, "h": 8.29 } }
+        ],
+        "hover": {
+          "variante": "89:288", "dur": 800, "easing": "EASE_IN_AND_OUT_BACK",
+          "masa": { "de": { "x": 132.03, "y": 76.29, "w": 521.46, "h": 577.55, "rot": 0 }, "a": { "x": 123.36, "y": 68.49, "w": 538.80, "h": 593.15, "rot": -1.74 } },
+          "foto": { "de": { "x": 54.77, "y": 177.74, "w": 570, "h": 326 }, "a": { "x": 45, "y": 166, "w": 590, "h": 350 } },
+          "play": { "de": { "fill": "none" }, "a": { "fill": "#FFFFFF" } }
+        }
+      },
+      "etiquetas": [
+        { "t": "Positioning",        "nodo": "53:41", "x": 276,  "y": 4802 },
+        { "t": "Expertize",          "nodo": "53:40", "x": 1041, "y": 4802 },
+        { "t": "Specialization",     "nodo": "53:42", "x": 199,  "y": 5112 },
+        { "t": "Authority",          "nodo": "53:37", "x": 1089, "y": 5112 },
+        { "t": "Seamless Operation", "nodo": "53:44", "x": 428,  "y": 5388 },
+        { "t": "Recurning Revenue",  "nodo": "53:46", "x": 811,  "y": 5388 }
+      ]
+    },
+    {
+      "orden": 8, "nombre": "recursos", "yTitular": 5598,
+      "fondo": { "nodo": "135:112", "caja": { "y": 5477, "h": 993 }, "color": "#F4F1EF" },
+      "titular": { "nodo": "89:444", "texto": "Resources", "caja": { "x": 99, "y": 5598, "w": 1241 } },
+      "parrafo": { "nodo": "89:445", "caja": { "x": 311, "y": 5667, "w": 813 } },
+      "tarjetas": [
+        { "t": "Facebook Group", "foto": { "x": 100,  "y": 5795, "w": 298, "h": 210 }, "circulo": { "x": 108,  "y": 5940, "w": 84, "h": 86 }, "icono": "ico-facebook.svg",  "raster": "recurso-1" },
+        { "t": "Books",          "foto": { "x": 415,  "y": 5795, "w": 298, "h": 210 }, "circulo": { "x": 423,  "y": 5940, "w": 84, "h": 86 }, "icono": "ico-books.svg",     "raster": "recurso-2" },
+        { "t": "Free Trainings", "foto": { "x": 728,  "y": 5795, "w": 298, "h": 210 }, "circulo": { "x": 736,  "y": 5940, "w": 84, "h": 86 }, "icono": "ico-trainings.svg", "raster": "recurso-3" },
+        { "t": "Podcast",        "foto": { "x": 1042, "y": 5795, "w": 298, "h": 210 }, "circulo": { "x": 1050, "y": 5940, "w": 84, "h": 86 }, "icono": "ico-podcast.svg",   "raster": "recurso-4" }
+      ],
+      "enlace": {
+        "nodos": ["191:266", "195:359", "195:364", "195:369"], "texto": "Learn More",
+        "reposo": { "nodo": "191:263", "w": 129, "flecha": { "linea": 12.5, "punta": 125 } },
+        "hover":  { "nodo": "191:262", "w": 141, "flecha": { "linea": 21.5, "punta": 137 } },
+        "dur": 500, "easing": "EASE_IN_AND_OUT_BACK"
+      }
+    },
+    {
+      "orden": 9, "nombre": "cta-final", "yTitular": 6530,
+      "fondo": { "nodo": "152:292", "caja": { "y": 6441, "h": 520 }, "color": "#FFFFFF" },
+      "titular": { "nodo": "152:303", "texto": "Paths To Success For Creative Agency Owners", "caja": { "x": 728, "y": 6530, "w": 476, "h": 103 } },
+      "parrafo": { "nodo": "152:304", "caja": { "x": 728, "y": 6658, "w": 612, "h": 130 } },
+      "cta": { "nodo": "152:306", "caja": { "x": 729, "y": 6813, "w": 195, "h": 59 } },
+      "arte": {
+        "nodo": "233:1890", "caja": { "x": 101, "y": 6472, "w": 510, "h": 454 },
+        "capas": [
+          { "nombre": "mascara+foto", "nodo": "233:1877", "mascara": "cta-mascara.svg", "inset": { "y": 10.46, "w": 100, "h": 87.45 }, "raster": "cta-foto" },
+          { "nombre": "trazo",        "nodo": "233:1876", "asset": "cta-trazo.svg", "inset": { "x": 14.16, "y": 0, "w": 74.60, "h": 100 } }
+        ],
+        "hover": { "variante": "233:1886", "dur": 500, "easing": "EASE_OUT", "escala": 1.0524, "rotMascara": 4.04, "rotTrazo": -3.42 }
+      }
+    },
+    {
+      "orden": 10, "nombre": "footer", "yTitular": 6961,
+      "fondo": { "nodo": "62:109", "caja": { "y": 6961, "h": 274 }, "color": "#F4F1EF" },
+      "logo": { "nodo": "154:169", "caja": { "x": 102, "y": 6991, "w": 97, "h": 97 }, "asset": "logo-cas.svg" },
+      "copyright": { "nodo": "154:198", "texto": "©2022 Creative Agency Success All Rights Reserved" },
+      "privacidad": { "nodo": "154:200", "texto": "Privacy Policy" },
+      "columnas": [
+        { "titulo": "Menu",      "items": ["Sucess Stories", "Resources", "Services", "About", "Contact"], "x": 418 },
+        { "titulo": "Resources", "items": ["Group", "Books", "Free Trainings", "Podcast", "Blog"],         "x": 633 }
+      ],
+      "newsletter": { "nodo": "154:231", "caja": { "x": 856, "y": 7049, "w": 485, "h": 34 }, "boton": { "x": 1222, "w": 118, "texto": "Subscribe" } }
+    }
+  ],
+
+  "rasterPendientes": [
+    { "id": "hero-retrato",   "nodo": "1295:1565", "w": 388, "h": 365, "desc": "Hombre de camisa a cuadros, hero" },
+    { "id": "retrato-1..7",   "nodo": "82:206,208,210,212,214,216,218", "w": 180, "h": 348, "desc": "7 retratos GettyImages de la tira de Success Stories" },
+    { "id": "prensa-*",       "nodo": "46:77,78,79,81,82 / 89:447", "desc": "Forbes, ABC, Entrepreneur, New York Post, RegexSEO, Agency Highway" },
+    { "id": "video-poster",   "nodo": "89:442", "w": 922, "h": 492, "desc": "Poster del vídeo de Collective Confidence" },
+    { "id": "metodo-foto",    "nodo": "89:281", "w": 570, "h": 326, "desc": "thisisengineering-raeng, dentro de la rueda" },
+    { "id": "cta-foto",       "nodo": "233:1878", "w": 628, "h": 422, "desc": "marco-xu, enmascarada en el CTA final" },
+    { "id": "recurso-1..4",   "nodo": "89:331, 189:220, 189:229, 189:238", "w": 298, "h": 210, "desc": "krakenimages, tarjetas de Resources" }
+  ],
+
+  "descartadas": [
+    { "nodo": "308:573",  "razon": "Ccomponent 44 — duplicado antiguo de la tira Component 9 (5 variantes vs 8)" },
+    { "nodo": "1268:1508 / 1284:3581 / 1295:2094 / 1284:3566 / 1367:1805", "razon": "iteraciones del arte del hero apiladas fuera del frame Desktop; la vigente es 1295:1833" },
+    { "nodo": "1295:1557", "razon": "Frame duplicado exactamente sobre 1295:1549 en el arte del hero" }
+  ]
+}

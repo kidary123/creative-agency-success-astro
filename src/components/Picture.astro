@@ -1,0 +1,63 @@
+---
+/**
+ * Imagen responsive.
+ *
+ * El bloque <style> de abajo NO es decorativo: Astro solo añade el atributo
+ * data-astro-cid-… a los componentes que tienen estilos propios. Sin él, las
+ * reglas que el padre escriba para posicionar este componente se compilan como
+ * .clase[data-astro-cid-…] y no casan con nada — el síntoma es "el CSS no hace
+ * efecto" sin ningún error. (Trampa 1.)
+ */
+interface Props {
+  src: string;
+  alt: string;
+  ratio?: string;
+  ratioMovil?: string;
+  ancho?: number;
+  alto?: number;
+  carga?: "lazy" | "eager";
+  clase?: string;
+}
+
+const {
+  src,
+  alt,
+  ratio = "auto",
+  ratioMovil,
+  ancho,
+  alto,
+  carga = "lazy",
+  clase = "",
+} = Astro.props;
+---
+
+<figure
+  class:list={["marco", clase]}
+  style={`--ratio:${ratio}; --ratio-movil:${ratioMovil ?? ratio};`}
+>
+  <img src={src} alt={alt} width={ancho} height={alto} loading={carga} decoding="async" />
+</figure>
+
+<style>
+  .marco {
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: var(--ratio-movil);
+  }
+
+  .marco img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  /* La proporción de escritorio solo a partir del breakpoint: un retrato
+     pensado para un panel cerrado hace que la tarjeta mida más que la
+     pantalla en móvil. (Trampa 6.) */
+  @media (min-width: 62rem) {
+    .marco {
+      aspect-ratio: var(--ratio);
+    }
+  }
+</style>

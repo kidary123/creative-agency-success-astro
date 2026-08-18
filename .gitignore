@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vercel/
+.verificacion/
+.figma-ref/
+public/assets/originales/
+.astro/
+.DS_Store

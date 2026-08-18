@@ -1,0 +1,164 @@
+---
+/**
+ * Resources (135:112, banda #F4F1EF de 993px).
+ *
+ * Cuatro tarjetas de 298×210 con un círculo #8686F2 de 84×86 cabalgando el
+ * borde inferior de la foto, y el enlace "Learn More" (Component 22 / 191:264).
+ *
+ * HOVER del enlace: la variante pasa de 129 a 141px de ancho — lo que crece es
+ * la flecha, cuya línea va de 12.5 a 21.5px y cuya punta se desplaza de x=125
+ * a x=137. 500ms EASE_IN_AND_OUT_BACK. No cambia el color.
+ */
+import Foto from "../Foto.astro";
+
+const tarjetas = [
+  { id: "recurso-1", t: "Facebook Group", icono: "ico-facebook.svg",  a: "Facebook" },
+  { id: "recurso-2", t: "Books",          icono: "ico-books.svg",     a: "Libros" },
+  { id: "recurso-3", t: "Free Trainings", icono: "ico-trainings.svg", a: "Formaciones" },
+  { id: "recurso-4", t: "Podcast",        icono: "ico-podcast.svg",   a: "Podcast" },
+];
+
+const cuerpo =
+  "We spent over a decade perfecting the exact six steps it takes to scale a creative agency to a million dollars in revenue while increasing profits and giving you free time again.";
+---
+
+<section class="recursos" id="recursos">
+  <div class="envoltorio">
+    <h2 class="h-seccion" data-animate="fade-up">Resources</h2>
+    <p class="intro" data-animate="fade-up" style="--retardo:110ms">
+      We have created a deep library of free resources and trainings designed to help
+      you and your agency on the path to success. Take a step today to begin building
+      the agency of your dreams..
+    </p>
+
+    <div class="rejilla" data-animate="stagger">
+      {tarjetas.map((c) => (
+        <article class="tarjeta">
+          <div class="cabecera">
+            <Foto id={c.id} alt={c.t} ratio="298 / 210" ratioMovil="298 / 210" />
+            <span class="disco">
+              <img src={`/assets/${c.icono}`} alt="" />
+            </span>
+          </div>
+
+          <h3>{c.t}</h3>
+          <p>{cuerpo}</p>
+
+          <a class="enlace" href="#cta-final">
+            <span>Learn More</span>
+            <svg class="flecha" viewBox="0 0 22 12" fill="none" aria-hidden="true">
+              <path class="linea" d="M0 6 H12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              <path class="punta" d="M8.5 1.5 L13.5 6 L8.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .recursos {
+    padding-block: 121px 128px;
+    background: var(--c-grey);
+  }
+
+  .recursos .intro { max-inline-size: 815px; margin-block-start: 18px; }
+
+  .rejilla {
+    margin-block-start: 70px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .cabecera { position: relative; }
+
+  .cabecera :global(.foto) {
+    transition: scale 700ms var(--e-out);
+  }
+
+  /* 189:217 — 84×86, 8px desde el borde izquierdo, cabalgando el borde
+     inferior de la foto (y=5940 frente a la foto que acaba en 6005). */
+  .disco {
+    position: absolute;
+    inset-inline-start: 2.68%;
+    inset-block-end: -9.5%;
+    inline-size: 28.19%;
+    aspect-ratio: 84 / 86;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--c-morado);
+    transition:
+      background var(--d-recurso) var(--e-back),
+      rotate var(--d-recurso) var(--e-back),
+      scale var(--d-recurso) var(--e-back);
+  }
+
+  .disco img {
+    inline-size: 42%;
+    block-size: auto;
+  }
+
+  .tarjeta h3 {
+    margin-block-start: 44px;
+    font-size: var(--t-tarjeta);
+    font-weight: var(--peso-titulo);
+    line-height: 30px;
+    color: var(--c-azul);
+  }
+
+  .tarjeta p {
+    margin-block-start: 24px;
+    font-size: var(--t-intro);
+    line-height: 1.5;
+    color: var(--c-dgrey);
+  }
+
+  /* ---- enlace Learn More ---- */
+  .enlace {
+    margin-block-start: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--t-intro);
+    font-weight: 500;
+    color: var(--c-azul);
+  }
+
+  .flecha {
+    inline-size: 13px;
+    block-size: 12px;
+    overflow: visible;
+    transition: inline-size var(--d-recurso) var(--e-back);
+  }
+
+  .flecha .linea,
+  .flecha .punta {
+    transition: d var(--d-recurso) var(--e-back), translate var(--d-recurso) var(--e-back);
+  }
+
+  /* 129 → 141: la línea pasa de 12.5 a 21.5 y la punta se va 12px a la derecha. */
+  .enlace:hover .flecha,
+  .enlace:focus-visible .flecha { inline-size: 22px; }
+  .enlace:hover .punta,
+  .enlace:focus-visible .punta { translate: 8px 0; }
+  .enlace:hover .linea,
+  .enlace:focus-visible .linea { scale: 1.72 1; transform-origin: left center; }
+
+  .tarjeta:hover .cabecera :global(.foto) { scale: 1.02; }
+  .tarjeta:hover .disco { background: var(--c-azul); rotate: -8deg; scale: 1.06; }
+
+  @media (max-width: 1100px) {
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+  }
+
+  @media (max-width: 620px) {
+    .recursos { padding-block: 72px 80px; }
+    .rejilla { grid-template-columns: minmax(0, 1fr); }
+
+    .tarjeta:hover .disco { background: var(--c-morado); rotate: 0deg; scale: 1; }
+    .tarjeta:hover .cabecera :global(.foto) { scale: 1; }
+  }
+</style>

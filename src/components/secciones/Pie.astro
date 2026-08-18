@@ -1,0 +1,153 @@
+---
+/**
+ * Pie (62:109, banda #021E46 de 274px). Logo 154:169, dos columnas de enlaces
+ * (154:202 y 154:214) y el bloque de newsletter 154:231: campo con borde
+ * blanco de 2px y botón blanco con texto #021E46 Bold 14.
+ *
+ * La pista del formulario va con minmax(0, 1fr) y el input con
+ * min-inline-size: 0 — si no, el ancho preferido del <input> (~20 caracteres)
+ * infla la pista y da scroll horizontal a TODA la página. (Trampa 8.)
+ */
+import Logo from "../Logo.astro";
+
+const columnas = [
+  { titulo: "Menu", items: ["Sucess Stories", "Resources", "Services", "About", "Contact"] },
+  { titulo: "Resources", items: ["Group", "Books", "Free Trainings", "Podcast", "Blog"] },
+];
+---
+
+<footer class="pie" id="contacto">
+  <div class="envoltorio rejilla">
+    <div class="marca">
+      <Logo ancho={97} clase="logo-pie" />
+      <p class="copy">©2022 Creative Agency Success All Rights Reserved</p>
+      <a class="privacidad" href="#">Privacy Policy</a>
+    </div>
+
+    {columnas.map((c) => (
+      <nav class="columna" aria-label={c.titulo}>
+        <p class="titulo">{c.titulo}</p>
+        <ul>
+          {c.items.map((i) => (
+            <li><a href="#">{i}</a></li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+
+    <div class="boletin">
+      <p class="titulo">Subscribe to Newsletter</p>
+      <form class="campo" novalidate>
+        <label class="oculto" for="correo">Correo electrónico</label>
+        <input id="correo" type="email" name="correo" autocomplete="email" placeholder="" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    background: var(--c-azul);
+    color: var(--c-white);
+    padding-block: 30px 42px;
+  }
+
+  .rejilla {
+    display: grid;
+    /* minmax(0, …) en TODAS las pistas: la última contiene un <input>. */
+    grid-template-columns:
+      minmax(0, 318fr) minmax(0, 215fr) minmax(0, 215fr) minmax(0, 485fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .marca :global(.logo-pie) { --escudo: var(--c-azul); }
+  .marca :global(.logo-pie):hover { --escudo: var(--c-white); }
+
+  .copy {
+    margin-block-start: 12px;
+    max-inline-size: 210px;
+    font-size: var(--t-cuerpo);
+    line-height: 1.25;
+    color: var(--c-white);
+  }
+
+  .privacidad {
+    display: inline-block;
+    margin-block-start: 14px;
+    font-size: var(--t-cuerpo);
+    color: var(--c-white);
+    transition: color var(--d-nav) var(--e-out);
+  }
+  .privacidad:hover { color: var(--c-verde); }
+
+  .columna { padding-block-start: 12px; }
+
+  .titulo {
+    font-size: var(--t-cuerpo);
+    font-weight: 500;
+    color: var(--c-white);
+  }
+
+  .columna ul { list-style: none; padding: 0; margin-block-start: 10px; }
+
+  .columna li + li { margin-block-start: 10px; }
+
+  .columna a {
+    position: relative;
+    font-size: var(--t-cuerpo);
+    color: #ffffffcc;
+    transition: color var(--d-nav) var(--e-out), translate var(--d-nav) var(--e-back);
+    display: inline-block;
+  }
+  .columna a:hover { color: var(--c-verde); translate: 4px 0; }
+
+  /* ---- boletín ---- */
+  .boletin { padding-block-start: 12px; }
+  .boletin .titulo { font-size: var(--t-mini); font-weight: 700; }
+
+  .campo {
+    margin-block-start: 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 118px;
+    block-size: 34px;
+  }
+
+  .campo input {
+    min-inline-size: 0;
+    block-size: 34px;
+    padding-inline: 12px;
+    background: transparent;
+    border: 2px solid var(--c-white);
+    border-inline-end: 0;
+    color: var(--c-white);
+    font-size: var(--t-mini);
+  }
+  .campo input:focus-visible { outline: 2px solid var(--c-verde); outline-offset: -2px; }
+
+  .campo button {
+    block-size: 34px;
+    background: var(--c-white);
+    color: var(--c-azul);
+    font-size: var(--t-mini);
+    font-weight: 700;
+    transition: background var(--d-nav) var(--e-out), color var(--d-nav) var(--e-out);
+  }
+  .campo button:hover { background: var(--c-verde); color: var(--c-azul); }
+
+  .oculto {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 900px) {
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
+    .marca, .boletin { grid-column: 1 / -1; }
+    .copy { max-inline-size: none; }
+  }
+</style>

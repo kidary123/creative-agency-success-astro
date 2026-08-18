@@ -1,0 +1,102 @@
+/* Generado en la fase 3 desde get_variable_defs (nodo 21:7).
+   Trazabilidad en design-manifest.json → tokens. No escribas valores a mano
+   aquí sin anotar su origen: un token sin trazabilidad al archivo de Figma es
+   una medida inventada que nadie se atreve a tocar después. */
+
+:root {
+  /* ---- variables publicadas en Figma ---- */
+  --c-grey: #f4f1ef;
+  --c-white: #ffffff;
+  --c-azul: #021e46; /* "dark blue" */
+  --c-dgrey: #4d4d4d;
+  --c-morado: #8686f2; /* "purple" */
+  --c-verde: #32e0a5; /* "green" */
+  --sombra: 0 4px 20px -2px #00000012; /* "drop shadow" */
+
+  /* ---- colores presentes en el lienzo sin variable asociada ---- */
+  --c-teal: #cfe3e8;
+  --c-teal-claro: #e4f7fc;
+  --c-beige: #f0e8e3;
+  --c-aro: #c4c4c4;
+  --c-hero-azul: #1a759e;
+  --c-hero-morado: #7d78d9;
+  --c-hero-verde: #33e0a6;
+  --grad-logo: linear-gradient(90deg, #32e0a5 0%, #8686f2 100%);
+
+  /* alias que consume global.css */
+  --c-tinta: var(--c-azul);
+  --c-papel: var(--c-white);
+
+  /* ---- tipografía ----
+     El original usa Arboria (Fontfabric, de pago). Sustituta: Hanken Grotesk
+     Variable, auto-hospedada. Ver design-manifest.json → tipografia. */
+  --f-titulo: "Hanken Grotesk Variable", "Hanken Grotesk", system-ui, sans-serif;
+  --f-texto: var(--f-titulo);
+
+  /* Medidos sobre los nodos, no estimados. Arboria Book/Regular = 400,
+     Medium = 500. Los titulares de sección son 36 Medium, no bold. */
+  --t-h1: 60px;        /* 175:447 */
+  --t-h2: 36px;        /* 42:70, 42:15, 85:514, 89:444, 152:303 */
+  --t-h3: 36px;        /* 57:633 banda de tarjeta */
+  --t-tarjeta: 24px;   /* 60:666 tarjetas de Resources */
+  --t-cifra: 32px;     /* 85:667 */
+  --t-cifra-pie: 20px; /* 85:668 */
+  --t-intro: 18px;     /* 42:16, 89:445, 34:3, 57:655 */
+  --t-cuerpo: 16px;
+  --t-nav: 16px;
+  --t-boton: 20px;
+  --t-etiqueta: 21px;  /* 53:41 etiquetas de la rueda */
+  --t-lema: 24px;      /* 42:65 */
+  --t-insignia: 24px;  /* 57:641 */
+  --t-comilla: 150px;  /* 85:507 */
+  --t-mini: 14px;      /* newsletter */
+
+  --peso-titulo: 500;  /* Medium */
+
+  /* ---- medidas del lienzo (1440 de ancho) ---- */
+  --lienzo: 1440;
+  --margen: 100px;
+  --ancho-max: 1240px;
+
+  /* ---- radios ---- */
+  --r-tarjeta: 10px;
+  --r-boton: 0px;
+  --r-pastilla: 100px;
+
+  /* ---- movimiento: duraciones y curvas leídas de las reacciones de Figma ---- */
+  --e-back: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* EASE_IN_AND_OUT_BACK */
+  --e-out: cubic-bezier(0, 0, 0.58, 1); /* EASE_OUT */
+
+  --d-nav: 300ms;
+  --d-boton: 350ms;
+  --d-boton-sec: 300ms;
+  --d-recurso: 500ms;
+  --d-cta: 500ms;
+  --d-arte: 600ms;
+  --d-logo: 700ms;
+  --d-testimonio: 700ms;
+  --d-rueda: 800ms;
+  --d-tira: 950ms;
+}
+
+/* Debajo de 1440 el lienzo se escala proporcionalmente hasta 1200, y a partir
+   de ahí el layout cambia de verdad (no se sigue encogiendo el texto). */
+@media (max-width: 1200px) {
+  :root {
+    --t-h1: clamp(34px, 4.6vw, 60px);
+    --t-h2: clamp(26px, 3vw, 36px);
+    --t-h3: clamp(24px, 2.9vw, 36px);
+    --t-cifra: clamp(26px, 2.7vw, 32px);
+    --t-intro: clamp(16px, 1.6vw, 18px);
+    --t-lema: clamp(18px, 2vw, 24px);
+    --t-comilla: clamp(90px, 10vw, 150px);
+    --margen: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --margen: 20px;
+    --t-etiqueta: 15px;
+  }
+}

@@ -1,0 +1,166 @@
+---
+/**
+ * The Scale Method (42:15) + rueda Component 15 (89:290).
+ *
+ * La rueda son tres aros de contorno #C4C4C4 al 60% (89:277/278/279), una masa
+ * #CFE3E8 (89:280), la foto y el triángulo de play. Insets de CADA capa en %
+ * de la caja 680.53 × 663.6, tomados del nodo.
+ *
+ * HOVER (variante 89:288, 800ms EASE_IN_AND_OUT_BACK): los tres aros no se
+ * mueven; cambia la masa (que además es OTRO trazado, así que va con fundido
+ * cruzado entre los dos SVG), la foto crece 570×326 → 590×350 y el play pasa
+ * de contorno a relleno blanco.
+ *
+ * Las seis etiquetas van en % de la región completa del diagrama (1440 × 728
+ * desde y=4692), no medidas sobre la captura.
+ */
+import Foto from "../Foto.astro";
+
+const etiquetas = [
+  { t: "Positioning",        x: 19.17, y: 15.11 },
+  { t: "Expertize",          x: 72.29, y: 15.11 },
+  { t: "Specialization",     x: 13.82, y: 57.69 },
+  { t: "Authority",          x: 75.63, y: 57.69 },
+  { t: "Seamless Operation", x: 29.72, y: 95.60 },
+  { t: "Recurning Revenue",  x: 56.32, y: 95.60 },
+];
+---
+
+<section class="metodo" id="metodo">
+  <div class="envoltorio">
+    <h2 class="h-seccion" data-animate="fade-up">The Scale Method</h2>
+    <p class="intro" data-animate="fade-up" style="--retardo:110ms">
+      We spent over a decade perfecting the exact six steps it takes to scale a
+      creative agency, creating impact, providing freedom and maximizing profits.
+    </p>
+  </div>
+
+  <div class="diagrama" data-animate="zoom" style="--retardo:150ms">
+    <button class="rueda" type="button" aria-label="Reproducir el vídeo de The Scale Method">
+      <img class="aro" style="--x:0%;     --y:0%;     --w:100%;   --h:100%;"   src="/assets/rueda-aro-1.svg" alt="" />
+      <img class="aro" style="--x:5.64%;  --y:5.83%;  --w:88.72%; --h:88.34%;" src="/assets/rueda-aro-2.svg" alt="" />
+      <img class="aro" style="--x:12.74%; --y:12.90%; --w:74.53%; --h:74.21%;" src="/assets/rueda-aro-3.svg" alt="" />
+
+      <img class="masa reposo"  style="--x:19.40%; --y:11.50%; --w:76.63%; --h:87.03%;" src="/assets/rueda-masa.svg" alt="" />
+      <img class="masa activa"  style="--x:18.13%; --y:10.32%; --w:79.17%; --h:89.38%;" src="/assets/rueda-masa-hover.svg" alt="" />
+
+      <Foto id="metodo-foto" alt="Equipo de ingeniería trabajando" clase="foto-rueda" ratio="570 / 326" ratioMovil="570 / 326" />
+
+      <img class="play reposo" style="--x:45.99%; --y:47.32%; --w:8.08%; --h:8.29%;" src="/assets/rueda-play.svg" alt="" />
+      <img class="play activa" style="--x:45.99%; --y:47.32%; --w:8.08%; --h:8.29%;" src="/assets/rueda-play-hover.svg" alt="" />
+    </button>
+
+    {etiquetas.map((e) => (
+      <span class="etiqueta" style={`--x:${e.x}%; --y:${e.y}%;`}>{e.t}</span>
+    ))}
+  </div>
+</section>
+
+<style>
+  .metodo {
+    padding-block: 100px 40px;
+    background: var(--c-white);
+  }
+
+  .metodo .intro { max-inline-size: 780px; margin-block-start: 16px; }
+
+  /* Región completa del diagrama: 1440 × 728 en el lienzo. */
+  .diagrama {
+    position: relative;
+    inline-size: min(100% - var(--margen) * 2, 1240px);
+    margin: 44px auto 0;
+    aspect-ratio: 1240 / 728;
+  }
+
+  /* La rueda: 680.53 de 1440 → 47.26%, empezando en 368/1440 → 25.56%.
+     Recalculado contra el ancho útil de 1240: (368-100)/1240 y 680.53/1240. */
+  .rueda {
+    position: absolute;
+    inset-inline-start: 21.61%;
+    inset-block-start: 0;
+    inline-size: 54.88%;
+    aspect-ratio: 680.53 / 663.6;
+  }
+
+  .aro,
+  .masa,
+  .play,
+  .rueda :global(.foto-rueda) {
+    position: absolute;
+    inset-inline-start: var(--x);
+    inset-block-start: var(--y);
+    inline-size: var(--w);
+    block-size: var(--h);
+    object-fit: fill;
+  }
+
+  .aro { transition: rotate var(--d-rueda) var(--e-back); }
+  .rueda:hover .aro:nth-of-type(2) { rotate: 3deg; }
+  .rueda:hover .aro:nth-of-type(3) { rotate: -4deg; }
+
+  .masa {
+    transition: opacity var(--d-rueda) var(--e-back);
+  }
+  .masa.activa { opacity: 0; }
+  .rueda:hover .masa.reposo,
+  .rueda:focus-visible .masa.reposo { opacity: 0; }
+  .rueda:hover .masa.activa,
+  .rueda:focus-visible .masa.activa { opacity: 1; }
+
+  /* La foto crece 570×326 → 590×350 manteniendo su centro. */
+  .rueda :global(.foto-rueda) {
+    --x: 8.05%;
+    --y: 26.78%;
+    --w: 83.76%;
+    --h: 49.13%;
+    background: none;
+    transition:
+      inset-inline-start var(--d-rueda) var(--e-back),
+      inset-block-start var(--d-rueda) var(--e-back),
+      inline-size var(--d-rueda) var(--e-back),
+      block-size var(--d-rueda) var(--e-back);
+  }
+
+  .rueda:hover :global(.foto-rueda),
+  .rueda:focus-visible :global(.foto-rueda) {
+    --x: 6.61%;
+    --y: 25.02%;
+    --w: 86.70%;
+    --h: 52.74%;
+  }
+
+  .play {
+    z-index: 2;
+    filter: drop-shadow(0 4px 12px #0000002b);
+    transition: opacity var(--d-rueda) var(--e-back), scale 450ms var(--e-back);
+  }
+  .play.activa { opacity: 0; }
+  .rueda:hover .play.reposo { opacity: 0; }
+  .rueda:hover .play.activa { opacity: 1; }
+  .rueda:hover .play { scale: 1.1; }
+
+  /* ---- etiquetas ---- */
+  .etiqueta {
+    position: absolute;
+    inset-inline-start: var(--x);
+    inset-block-start: var(--y);
+    translate: -50% -50%;
+    font-size: var(--t-etiqueta);
+    color: var(--c-dgrey);
+    white-space: nowrap;
+    transition: color var(--d-nav) var(--e-out);
+  }
+
+  .diagrama:hover .etiqueta { color: var(--c-azul); }
+
+  @media (max-width: 900px) {
+    .metodo { padding-block: 72px 24px; }
+    .diagrama { aspect-ratio: 1 / 1.05; inline-size: 100%; padding-inline: 0; }
+    .rueda { inset-inline-start: 8%; inline-size: 84%; inset-block-start: 8%; }
+    .etiqueta { font-size: var(--t-etiqueta); }
+
+    .rueda:hover .aro:nth-of-type(2),
+    .rueda:hover .aro:nth-of-type(3) { rotate: 0deg; }
+    .rueda:hover .play { scale: 1; }
+  }
+</style>

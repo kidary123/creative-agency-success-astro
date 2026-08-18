@@ -1,0 +1,294 @@
+---
+/**
+ * "The Journey To Your Sucess" (42:70) + tira de retratos (Component 9 /
+ * 85:465) + banda "Featured in" (152:124).
+ *
+ * La tira es el caso completo de las trampas 6 y 7: en reposo son 7 retratos
+ * de 348px con distinto padding superior (85:464, alto 489). Al pasar el ratón
+ * sobre uno, Figma cambia a la variante correspondiente (85:457…85:463,
+ * SMART_ANIMATE 950ms EASE_IN_AND_OUT_BACK): la columna crece a 520px y se
+ * abre un panel con titular, texto y "Learn More".
+ *
+ * Aquí el panel va en position:absolute para no empujar a sus hermanos, y la
+ * altura del contenedor la lleva el propio CSS con :has() hasta la altura
+ * exacta de cada variante. Reservar siempre la mayor dejaba medio scroll de
+ * hueco muerto en reposo — que es justo el síntoma de la trampa 7.
+ */
+import Foto from "../Foto.astro";
+
+const historias = [
+  {
+    id: "retrato-1", pt: 70, altoImg: 348, titulo: "Freedom",
+    texto: "You know that your agency's success depends on its ability to execute flawlessly on campaigns and projects, but there never seems to be enough time or bandwidth to handle all of the day-to-day process management tasks yourself.\nWe help you automate and optimize your agency's processes so you can focus on what you do best - creating great work...and being able to leave at 4 PM every day without worrying about your business.",
+  },
+  {
+    id: "retrato-2", pt: 124, altoImg: 484, titulo: "Fulfillment",
+    texto: "When your work becomes a job, it's hard to maintain the level of personal fulfillment that you once had. This can lead to burnout and creative stagnation.\n\nWe'll help you rediscover the joy in your work and be inspired once again. We'll provide the resources and support you need to get back on track and make your dream agency a reality.",
+  },
+  {
+    id: "retrato-3", pt: 66, altoImg: 348, titulo: "Passion",
+    texto: "When you're starting an agency, it feels like anything is possible. But as time goes on, the challenges seem to mount up and it's harder to stay motivated.\n\nWe can help reignite your passion for growing your agency. When you partner with us, you'll not only get access to our exclusive training, tools, and resources, but also a community of other agency owners that will encourage and push you to become your best.",
+  },
+  {
+    id: "retrato-4", pt: 138, altoImg: 246, titulo: "Purpose",
+    texto: "Agencies are started with a dream, but that dream can quickly fade as the day-to-day grind takes over. It's easy to lose sight of your original purpose when you're bogged down with client work and administrative tasks.\n\nWe will help you rediscover your purpose again and keep it at the forefront of everything you do. With regular check-ins and a supportive community, you purpose will help you stay focused on what's important and keep your business moving in the right direction.",
+  },
+  {
+    id: "retrato-5", pt: 65, altoImg: 348, titulo: "Confidence",
+    texto: "When you're feeling lost or uncertain, it's easy to doubt yourself and your decisions. This can quickly lead to stagnation and a lack of growth.\n\nWe'll provide you with actionable steps so you can move forward with certainty. Plus, the community of other agency owners will provide a collective confidence that will help you break through your fear and hesitation.",
+  },
+  {
+    id: "retrato-6", pt: 140, altoImg: 429, titulo: "Control",
+    texto: "Clarity is impossible when you are bouncing from “fire” to fire”. You feel like you're always playing catch-up and never really getting ahead.\n\nWe will help you get clear about what you need to do and when you need to do it. You'll learn how to measure the success in every area your agency so that you can continue making progress.",
+  },
+  {
+    id: "retrato-7", pt: 106, altoImg: 348, titulo: "Control",
+    texto: "Agency growth is stunted because you're spending too much time working on things that don't scale.\n\nWe offer a solution that helps free your time to focus on what's important - scaling your agency and driving results for your clients. As an agency scale partner will help you automate processes and create systems, so you can spend less time working and more time growing your agency.",
+  },
+];
+
+// 138:186 — los seis logos de prensa, con su caja exacta dentro de la banda.
+const prensa = [
+  { id: "prensa-forbes",        alt: "Forbes",          x: 0,    y: 21, w: 149, h: 40 },
+  { id: "prensa-abc",           alt: "ABC",             x: 168,  y: 5,  w: 74,  h: 73 },
+  { id: "prensa-entrepreneur",  alt: "Entrepreneur",    x: 258,  y: 0,  w: 282, h: 83 },
+  { id: "prensa-nypost",        alt: "New York Post",   x: 554,  y: 27, w: 273, h: 39 },
+  { id: "prensa-regexseo",      alt: "Regex SEO",       x: 845,  y: 27, w: 210, h: 42 },
+  { id: "prensa-agencyhighway", alt: "Agency Highway",  x: 1083, y: 26, w: 158, h: 52 },
+];
+---
+
+<section class="historias" id="historias">
+  <div class="envoltorio cabecera">
+    <h2 class="h-seccion" data-animate="fade-up">The Journey To Your Sucess</h2>
+    <p class="intro" data-animate="fade-up" style="--retardo:110ms">
+      The stories of our clients’ success inspire us. We’ve helped them navigate the
+      challenges that come with growth and development, so they can succeed on their
+      own terms.
+    </p>
+  </div>
+
+  <div class="tira" data-tira data-animate="stagger">
+    {historias.map((h) => (
+      <article class="columna" style={`--pt:${h.pt}px; --alto-img:${h.altoImg}px;`} tabindex="0">
+        <div class="marco">
+          <Foto id={h.id} alt={h.titulo} clase="retrato" />
+        </div>
+
+        <div class="panel" data-panel>
+          <h3>{h.titulo}</h3>
+          <p>{h.texto}</p>
+          <a class="boton-sec" href="#cta-final">Learn More</a>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="prensa-banda">
+    <div class="envoltorio">
+      <p class="prensa-titulo" data-animate="fade-up">Featured in</p>
+      <div class="prensa" data-animate="stagger">
+        {prensa.map((p) => (
+          <Foto
+            id={p.id}
+            alt={p.alt}
+            clase="marca-prensa"
+            ratio={`${p.w} / ${p.h}`}
+            ratioMovil={`${p.w} / ${p.h}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .historias { padding-block-start: 96px; }
+
+  .cabecera { display: grid; gap: 14px; }
+  .cabecera .intro { max-inline-size: 800px; }
+
+  /* ---- tira ---- */
+  .tira {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-block-start: 44px;
+    inline-size: min(100%, 1440px);
+    margin-inline: auto;
+    min-block-size: 489px;
+    transition: min-block-size var(--d-tira) var(--e-back);
+  }
+
+  /* Alturas de las variantes 85:457…85:463. Reservar SIEMPRE la mayor dejaba
+     medio scroll de hueco muerto en reposo (trampa 7); en Figma el frame crece
+     solo mientras el puntero está encima, así que aquí igual. */
+  @media (min-width: 62rem) {
+    .tira:has(.columna:nth-child(1):hover), .tira:has(.columna:nth-child(1):focus-within) { min-block-size: 780px; }
+    .tira:has(.columna:nth-child(2):hover), .tira:has(.columna:nth-child(2):focus-within) { min-block-size: 756px; }
+    .tira:has(.columna:nth-child(3):hover), .tira:has(.columna:nth-child(3):focus-within) { min-block-size: 804px; }
+    .tira:has(.columna:nth-child(4):hover), .tira:has(.columna:nth-child(4):focus-within) { min-block-size: 828px; }
+    .tira:has(.columna:nth-child(5):hover), .tira:has(.columna:nth-child(5):focus-within) { min-block-size: 780px; }
+    .tira:has(.columna:nth-child(6):hover), .tira:has(.columna:nth-child(6):focus-within) { min-block-size: 780px; }
+    .tira:has(.columna:nth-child(7):hover), .tira:has(.columna:nth-child(7):focus-within) { min-block-size: 780px; }
+  }
+
+  .columna {
+    position: relative;
+    flex: 1 1 0;
+    min-inline-size: 0;
+    padding-block-start: var(--pt);
+    transition: flex-grow var(--d-tira) var(--e-back);
+    outline: none;
+  }
+
+  .marco { position: relative; }
+
+  .columna :global(.retrato) {
+    block-size: var(--alto-img);
+    aspect-ratio: auto;
+    transition: block-size var(--d-tira) var(--e-back);
+  }
+
+  /* El panel no empuja a los hermanos: se posiciona sobre el flujo y la altura
+     que necesita la sección se reserva en el contenedor (ver script). */
+  .panel {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(var(--pt) + var(--alto-img) + 8px);
+    padding: 24px 32px 32px;
+    background: var(--c-white);
+    box-shadow: var(--sombra);
+    opacity: 0;
+    translate: 0 14px;
+    pointer-events: none;
+    transition:
+      opacity calc(var(--d-tira) * 0.6) var(--e-out),
+      translate var(--d-tira) var(--e-back);
+  }
+
+  .panel h3 { font-size: var(--t-h3); color: var(--c-azul); }
+  .panel p {
+    margin-block: 18px 26px;
+    font-size: var(--t-cuerpo);
+    line-height: 1.6;
+    color: var(--c-dgrey);
+    white-space: pre-line;
+  }
+
+  @media (min-width: 62rem) {
+    .tira:hover .columna { flex-grow: 0.62; }
+
+    .columna:hover,
+    .columna:focus-visible,
+    .columna:focus-within { flex-grow: 3.4; }
+
+    .columna:hover .panel,
+    .columna:focus-visible .panel,
+    .columna:focus-within .panel {
+      opacity: 1;
+      translate: 0 0;
+      pointer-events: auto;
+    }
+
+    .columna:hover :global(.retrato),
+    .columna:focus-within :global(.retrato) { block-size: 418px; }
+  }
+
+  /* ---- prensa ---- */
+  .prensa-banda {
+    margin-block-start: 31px;
+    padding-block: 98px 100px;
+    background: var(--c-white);
+  }
+
+  .prensa-titulo {
+    font-size: var(--t-intro);
+    line-height: 30px;
+    text-align: center;
+    color: var(--c-dgrey);
+  }
+
+  .prensa {
+    margin-block-start: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: nowrap;
+  }
+
+  .prensa :global(.marca-prensa) {
+    background: none;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    filter: grayscale(1);
+    opacity: 0.85;
+    transition: opacity var(--d-nav) var(--e-out), filter var(--d-nav) var(--e-out);
+  }
+  .prensa :global(.marca-prensa):nth-child(1) { inline-size: 149px; }
+  .prensa :global(.marca-prensa):nth-child(2) { inline-size: 74px; }
+  .prensa :global(.marca-prensa):nth-child(3) { inline-size: 282px; }
+  .prensa :global(.marca-prensa):nth-child(4) { inline-size: 273px; }
+  .prensa :global(.marca-prensa):nth-child(5) { inline-size: 210px; }
+  .prensa :global(.marca-prensa):nth-child(6) { inline-size: 158px; }
+
+  .prensa:hover :global(.marca-prensa) { opacity: 0.45; }
+  .prensa :global(.marca-prensa):hover { opacity: 1; filter: grayscale(0); }
+
+  /* ---- táctil / estrecho: el patrón de escritorio se apaga de verdad ----
+     Se redefine la proporción del retrato (trampa 6): con el panel siempre
+     abierto, un 180/348 hace que cada tarjeta supere la altura de pantalla. */
+  @media (max-width: 62rem) {
+    /* En Figma el móvil no apila las siete historias: es un carrusel
+       (Component 28, 375×324, seis variantes). Apilarlas daba una sección de
+       casi 5000px — patrón de escritorio sobreviviendo al cambio de layout,
+       que es exactamente la trampa 6. */
+    .tira {
+      display: flex;
+      gap: 20px;
+      min-block-size: 0 !important;
+      padding-inline: var(--margen);
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tira::-webkit-scrollbar { display: none; }
+
+    .columna {
+      padding-block-start: 0;
+      flex: 0 0 min(86%, 420px);
+      scroll-snap-align: center;
+    }
+
+    .columna :global(.retrato) {
+      block-size: auto;
+      aspect-ratio: 16 / 10;
+    }
+
+    .panel {
+      position: static;
+      opacity: 1;
+      translate: 0 0;
+      pointer-events: auto;
+      padding: 20px 0 0;
+      box-shadow: none;
+      background: none;
+    }
+
+    .panel p { margin-block: 12px 20px; }
+
+    /* Repetidos aquí, misma especificidad y más abajo, para que el :hover
+       no se quede pegado tras un toque. */
+    .columna:hover,
+    .columna:focus-within { flex-grow: 1; }
+    .columna:hover :global(.retrato),
+    .columna:focus-within :global(.retrato) { block-size: auto; }
+
+    .prensa { justify-content: center; gap: 24px 40px; }
+    .prensa-banda { padding-block: 56px; }
+  }
+</style>
+

@@ -1,0 +1,34 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/secciones/Hero.astro";
+import Historias from "../components/secciones/Historias.astro";
+import Confianza from "../components/secciones/Confianza.astro";
+import Servicios from "../components/secciones/Servicios.astro";
+import Testimonios from "../components/secciones/Testimonios.astro";
+import Metodo from "../components/secciones/Metodo.astro";
+import Recursos from "../components/secciones/Recursos.astro";
+import CtaFinal from "../components/secciones/CtaFinal.astro";
+import Pie from "../components/secciones/Pie.astro";
+
+// Orden tomado de design-manifest.json → secciones, ordenado por la Y de los
+// titulares (nunca la de los fondos: el lienzo tiene maquetaciones apiladas).
+---
+
+<Base
+  titulo="Creative Agency Success — Your Agency Vision Made Real"
+  descripcion="Impact, Freedom and Profit for creative agency owners. Individual Clarity and Collective Confidence is the path."
+>
+  <Nav />
+  <main>
+    <Hero />
+    <Historias />
+    <Confianza />
+    <Servicios />
+    <Testimonios />
+    <Metodo />
+    <Recursos />
+    <CtaFinal />
+  </main>
+  <Pie />
+</Base>

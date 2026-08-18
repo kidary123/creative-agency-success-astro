@@ -1,0 +1,37 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  imagen?: string;
+}
+
+const { titulo, descripcion = "", imagen = "/assets/og.webp" } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site ?? "http://localhost:4321");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:image" content={new URL(imagen, canonica)} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import "../scripts/animar.js";
+    </script>
+  </body>
+</html>

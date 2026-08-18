@@ -1,0 +1,211 @@
+---
+/**
+ * Servicios: Agency Accelerator (170:425) y Scale Partnership (170:423).
+ *
+ * Cada tarjeta es un bloque de color de 612×418 (53:49 #8686F2 / 53:50
+ * #32E0A5) con el arte encima, una banda #021E46 de 76px justo debajo y un
+ * círculo de 130px que cabalga las dos.
+ *
+ * ARTE — los insets son de CADA CAPA en % del bloque de color, no del arte
+ * completo (trampa 5). Vienen del manifest, medidos sobre los nodos:
+ *
+ *   rayas    85:783  23.2026 / 23.6565 / 51.657  / 57.0708
+ *   contorno 85:816  23.7883 /  5.2632 / 51.375  / 89.4206
+ *   masa     89:211  27.4526 / 12.1986 / 42.1569 / 79.9043
+ *   contorno 89:212  18.3007 / 10.5263 / 63.0719 / 77.7512   sangrado ×1.0057
+ *
+ * HOVER — comparando las variantes reposo/hover nodo a nodo, los cuatro
+ * centros coinciden exactamente: no hay escala ni desplazamiento, solo un giro
+ * sobre el centro. Los AABB que crecen son consecuencia del giro, no una
+ * escala. 600ms EASE_IN_AND_OUT_BACK.
+ *
+ *   rayas    0° → +7.21°     contorno12  0° → −6.97°
+ *   masa   −90° → −84.32°    contorno13 −90° → −98.74°   (+5.68° / −8.74°)
+ *
+ * La masa además pasa de #CFE3E8 a #E4F7FC.
+ */
+import Layer from "../Layer.astro";
+
+const tarjetas = [
+  {
+    id: "acelerador",
+    titulo: "Agency Accelerator",
+    insignia: "5 to 6\nFigures",
+    color: "var(--c-morado)",
+    circulo: "var(--c-verde)",
+    tintaInsignia: "#000000",
+    texto:
+      "Scale your creative agency to 7-figures. We will help you build systems to consistently get a flow of new clients each month, streamline services to maximize profits, and do it all with the goal of giving you free time back again. Some of our clients work as little as 5 hours a week now while still increasing profits.",
+  },
+  {
+    id: "escala",
+    titulo: "Scale Partnership",
+    insignia: "6 to 7\nFigures",
+    color: "var(--c-verde)",
+    circulo: "var(--c-morado)",
+    tintaInsignia: "var(--c-white)",
+    texto:
+      "This is a premium group for agencies already at 7-figures that are ready to scale to $10M+ revenue per year. You gain access to business wisdom you can use to create sustainable growth for your creative agency. A tailored approach that will help you maximize profits, create a management structure that works for you, develop a long-term vision for your agency, and maximize valuation.",
+  },
+];
+---
+
+<section class="servicios" id="servicios">
+  <div class="onda" aria-hidden="true"></div>
+
+  <div class="envoltorio rejilla">
+    {tarjetas.map((t, i) => (
+      <article class:list={["tarjeta", t.id]} data-animate="fade-up" style={`--retardo:${i * 130}ms; --color:${t.color}; --circulo:${t.circulo}; --tinta-insignia:${t.tintaInsignia};`}>
+        <div class="visual">
+          <div class="bloque">
+            {i === 0 ? (
+              <>
+                <Layer
+                  src="/assets/art12-rayas.svg"
+                  inset={{ x: 23.2026, y: 23.6565, w: 51.657, h: 57.0708 }}
+                  clase="capa-rayas"
+                />
+                <Layer
+                  src="/assets/art12-contorno.svg"
+                  inset={{ x: 23.7883, y: 5.2632, w: 51.375, h: 89.4206 }}
+                  clase="capa-contorno-12"
+                />
+              </>
+            ) : (
+              <>
+                <Layer
+                  src="/assets/art13-masa.svg"
+                  inset={{ x: 27.4526, y: 12.1986, w: 42.1569, h: 79.9043 }}
+                  clase="capa-masa"
+                />
+                <Layer
+                  src="/assets/art13-contorno.svg"
+                  inset={{ x: 18.3007, y: 10.5263, w: 63.0719, h: 77.7512 }}
+                  sangrado={{ x: 1.00573, y: 1.0068 }}
+                  clase="capa-contorno-13"
+                />
+              </>
+            )}
+          </div>
+
+          <p class="insignia"><span>{t.insignia}</span></p>
+          <h3 class="banda">{t.titulo}</h3>
+        </div>
+
+        <p class="cuerpo">{t.texto}</p>
+        <a class="boton" href="#cta-final">Get Started</a>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .servicios {
+    position: relative;
+    padding-block: 152px 130px;
+    isolation: isolate;
+  }
+
+  /* 42:72 — la cuña #F4F1EF que sube por la derecha detrás de las tarjetas. */
+  .onda {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: 842px;
+    background: var(--c-grey);
+    clip-path: polygon(0 5.45%, 100% 0, 100% 100%, 0 100%);
+    z-index: -1;
+  }
+
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+    align-items: start;
+  }
+
+  /* ---- bloque de color + arte ---- */
+  .visual { position: relative; }
+
+  .bloque {
+    position: relative;
+    aspect-ratio: 612 / 418;
+    background: var(--color);
+    border-radius: var(--r-tarjeta) var(--r-tarjeta) 0 0;
+  }
+
+  /* Las capas giran sobre su propio centro; translate y rotate van como
+     propiedades sueltas para no pisar ningún transform del contenedor. */
+  .bloque :global(.capa) {
+    transition: rotate var(--d-arte) var(--e-back), filter var(--d-arte) var(--e-back);
+    will-change: rotate;
+  }
+
+  .tarjeta:hover .bloque :global(.capa-rayas)        { rotate: 7.21deg; }
+  .tarjeta:hover .bloque :global(.capa-contorno-12)  { rotate: -6.97deg; }
+  .tarjeta:hover .bloque :global(.capa-masa)         { rotate: 5.68deg; filter: brightness(1.075) saturate(0.62); }
+  .tarjeta:hover .bloque :global(.capa-contorno-13)  { rotate: -8.74deg; }
+
+  /* ---- insignia 57:640 / 57:644 (130px, cabalga bloque y banda) ---- */
+  .insignia {
+    position: absolute;
+    inset-inline-start: 75%;
+    inset-block-start: 74.4%;
+    inline-size: 21.24%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--circulo);
+    color: var(--tinta-insignia);
+    z-index: 2;
+    transition: rotate var(--d-arte) var(--e-back), scale var(--d-arte) var(--e-back);
+  }
+
+  .insignia span {
+    font-size: var(--t-insignia);
+    font-weight: 500;
+    line-height: 0.83;
+    text-align: center;
+    white-space: pre-line;
+  }
+
+  .tarjeta:hover .insignia { rotate: -6deg; scale: 1.06; }
+
+  /* ---- banda 57:631 / 57:642 ---- */
+  .banda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 76px;
+    margin-block-start: -2px;
+    background: var(--c-azul);
+    font-size: var(--t-h3);
+    font-weight: var(--peso-titulo);
+    color: var(--c-white);
+  }
+
+  .cuerpo {
+    margin-block-start: 39px;
+    font-size: var(--t-intro);
+    line-height: 30px;
+    color: var(--c-dgrey);
+  }
+
+  .tarjeta .boton { margin-block-start: 32px; }
+
+  @media (max-width: 900px) {
+    .servicios { padding-block: 90px 80px; }
+    .rejilla { grid-template-columns: minmax(0, 1fr); gap: 56px; }
+    .onda { block-size: 420px; }
+    .banda { block-size: 62px; }
+    .insignia span { font-size: 16px; }
+
+    /* El :hover no se queda pegado tras un toque en táctil. */
+    .tarjeta:hover .bloque :global(.capa-rayas),
+    .tarjeta:hover .bloque :global(.capa-contorno-12),
+    .tarjeta:hover .bloque :global(.capa-masa),
+    .tarjeta:hover .bloque :global(.capa-contorno-13) { rotate: 0deg; filter: none; }
+    .tarjeta:hover .insignia { rotate: 0deg; scale: 1; }
+  }
+</style>
