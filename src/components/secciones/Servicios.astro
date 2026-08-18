@@ -34,6 +34,7 @@ const tarjetas = [
     color: "var(--c-morado)",
     circulo: "var(--c-verde)",
     tintaInsignia: "#000000",
+    boton: "verde",
     texto:
       "Scale your creative agency to 7-figures. We will help you build systems to consistently get a flow of new clients each month, streamline services to maximize profits, and do it all with the goal of giving you free time back again. Some of our clients work as little as 5 hours a week now while still increasing profits.",
   },
@@ -44,6 +45,9 @@ const tarjetas = [
     color: "var(--c-verde)",
     circulo: "var(--c-morado)",
     tintaInsignia: "var(--c-white)",
+    // 57:650 "Component 2": misma geometría que el botón verde pero con el
+    // relleno sobrescrito a #8686F2 y el texto en blanco.
+    boton: "morado",
     texto:
       "This is a premium group for agencies already at 7-figures that are ready to scale to $10M+ revenue per year. You gain access to business wisdom you can use to create sustainable growth for your creative agency. A tailored approach that will help you maximize profits, create a management structure that works for you, develop a long-term vision for your agency, and maximize valuation.",
   },
@@ -91,7 +95,7 @@ const tarjetas = [
         </div>
 
         <p class="cuerpo">{t.texto}</p>
-        <a class="boton" href="#cta-final">Get Started</a>
+        <a class:list={["boton", { "boton-morado": t.boton === "morado" }]} href="#cta-final">Get Started</a>
       </article>
     ))}
   </div>
@@ -183,6 +187,18 @@ const tarjetas = [
   }
 
   .tarjeta .boton { margin-block-start: 32px; }
+
+  /* 57:650 — el CTA de Scale Partnership no es verde: va #8686F2 con el texto
+     en blanco. El hover es el de la variante compartida (38:162). */
+  .tarjeta .boton-morado {
+    background: var(--c-morado);
+    color: var(--c-white);
+  }
+  .tarjeta .boton-morado:hover,
+  .tarjeta .boton-morado:focus-visible {
+    background: var(--c-azul);
+    color: var(--c-verde);
+  }
 
   @media (max-width: 900px) {
     .servicios { padding-block: 90px 80px; }

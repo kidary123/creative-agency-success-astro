@@ -379,3 +379,60 @@ estos cuatro no salen del Figma y **no me los he inventado**:
 
 También conviene sustituir `public/assets/og.png`: el que hay lo generé yo con
 los colores y la tipografía de marca, pero sin las fotos reales.
+
+---
+
+## 8. Segunda ronda (2026-08-18)
+
+### La animación de la tira estaba mal medida
+
+Tenía las alturas cambiadas de sitio: puse como altura **de reposo** lo que en
+realidad es la altura **de la columna abierta**. En reposo las siete imágenes
+miden lo mismo.
+
+Medidas reales de las variantes:
+
+| | reposo (85:464) | hover |
+|---|---|---|
+| ancho de columna | 192 (×7, gap 16) | **520** la abierta, **137.3** las otras seis |
+| imagen | 192 × **348** en todas | 520 de ancho, alto 348/484/348/**246**/348/429/348 |
+| desfase superior | 70 / 124 / 66 / 138 / 65 / 140 / 106 | el mismo |
+| panel | — | x = el de la columna, **y = 376 siempre**, 520 de ancho, `#F4F1EF`, padding 32 |
+| alto del bloque | 489 | 780 / 756 / 804 / **828** / 780 / 780 / 780 |
+
+El reparto en flex sale de ahí, no de tantear: con `flex-basis: 0` y `gap: 16`,
+el espacio libre es 1440−96 = 1344; `flex-grow: 3.788` para la abierta y `1`
+para el resto da 520.1 y 137.3.
+
+El panel arranca en y=376 en las siete variantes: el texto empieza siempre a la
+misma altura aunque la imagen abierta acabe por encima o por debajo. Y es
+`#F4F1EF`, no blanco, y sin sombra.
+
+> **Trampa 13. Especificidad al escribir "el hermano con hover" y "los demás".**
+> `.tira:hover .columna` es (0,3,0) y `.columna:hover` es (0,2,0): la regla de
+> *los demás* le gana a la de *la que tiene el puntero encima*, así que la
+> columna no crecía nada aunque el panel sí apareciera — un fallo que parece de
+> flexbox y es de cascada. La abierta hay que escribirla anidada
+> (`.tira:hover .columna:hover`) para subirla a (0,4,0).
+
+### El retrato del hero salía opaco
+
+`exportAsync` sobre `1295:1565` devuelve un PNG **sin un solo píxel
+transparente**, con el fondo relleno de `#E5E5E5`: al exportar un nodo suelto,
+Figma le compone el gris del lienzo. Verificado sobre el archivo descargado —
+canal alfa presente (colortype 6) pero con `min = max = 255`.
+
+El PNG recortado va **dentro del paquete**, en `public/assets/fotos/`, y
+`ACTUALIZAR.bat` ya no lo vuelve a descargar. El recorte se hizo con relleno
+por difusión desde los bordes (no un reemplazo global de color) para no
+agujerear el gris que hay dentro de la camisa, y con alfa proporcional en el
+contorno para que no quede orla.
+
+> Si hay que regenerarlo: exportar desde Figma con el fondo de página en
+> transparente, o usar el `rawImage` del fill en lugar del export del nodo.
+
+### El botón de Scale Partnership
+
+`57:650` se llama "Component 2" pero es el mismo componente que el resto con el
+relleno sobrescrito: **`#8686F2` con el texto en blanco**, no verde. El hover
+sigue siendo el de la variante compartida `38:162` (`#021E46` + `#32E0A5`).
