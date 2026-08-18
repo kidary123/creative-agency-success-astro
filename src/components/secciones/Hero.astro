@@ -1,7 +1,16 @@
 ---
 /**
- * Hero. Fondo #F4F1EF (82:49, 596px) que muere antes del pie de sección.
- * Titular 175:447, párrafo 34:3, CTA 38:168, arte 1295:1833.
+ * Hero. Fondo #F4F1EF (82:49): y 100 → 696 del lienzo, 596 de alto.
+ * Titular 175:447, párrafo 34:3, CTA 38:168, arte 1295:1833, lema 42:65.
+ *
+ * Dos posiciones que no son decorativas y conviene no "arreglar":
+ *
+ *   38:168  el botón va de y656 a y715 y el beige acaba en y696, así que
+ *           CRUZA el borde: 40px dentro del beige y 19px ya sobre el blanco.
+ *   42:65   el lema arranca en y715 — está en la franja blanca, no en el
+ *           beige — y su caja (x775, ancho 498) queda centrada bajo el arte.
+ *
+ * Medidos desde el techo de la sección (y=100): botón 556→615, lema 615.
  *
  * El arte son tres capas con su propio inset (trampa 5): las formas de color,
  * el heptágono de contorno —ambas dentro de hero-formas.svg— y el retrato.
@@ -33,8 +42,6 @@ const etiquetas = [
         want for you. Individual Clarity and Collective Confidence is the path. You
         have found your tribe, welcome home.
       </p>
-
-      <a class="boton" href="#cta-final" data-animate="fade-up" style="--retardo:240ms">Get Started</a>
     </div>
 
     <div class="arte" data-animate="zoom" style="--retardo:150ms">
@@ -50,9 +57,11 @@ const etiquetas = [
         ))}
       </div>
     </div>
-  </div>
 
-  <p class="lema" data-animate="fade-up">You scale your agency. We simplify your life.</p>
+    <a class="boton" href="#cta-final" data-animate="fade-up" style="--retardo:240ms">Get Started</a>
+
+    <p class="lema" data-animate="fade-up">You scale your agency. We simplify your life.</p>
+  </div>
 </section>
 
 <style>
@@ -61,7 +70,7 @@ const etiquetas = [
     padding-block-start: 66px;
   }
 
-  /* 82:49 — rectángulo #F4F1EF de 596px que arranca en y=100 del lienzo. */
+  /* 82:49 — 596px de beige contados desde el techo de la sección. */
   .fondo {
     position: absolute;
     inset: 0 0 auto;
@@ -71,6 +80,7 @@ const etiquetas = [
   }
 
   .rejilla-hero {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 475fr) minmax(0, 580fr);
     align-items: center;
@@ -91,8 +101,6 @@ const etiquetas = [
     color: var(--c-azul);
     line-height: 1.62;
   }
-
-  .texto .boton { margin-block-start: 42px; }
 
   /* ---- arte 1295:1833 (579.614 × 438) ---- */
   .arte { justify-self: end; inline-size: 100%; max-inline-size: 580px; }
@@ -122,9 +130,7 @@ const etiquetas = [
     background: none;
   }
 
-  /* 1295:1565 es un PNG recortado con alfa: NO debe llevar fondo propio.
-     Mientras falta el raster, el marcador va translúcido para no tapar las
-     formas de debajo, y en cuanto llega la foto el marco queda transparente. */
+  /* El retrato es un recorte con alfa real: nunca lleva fondo propio. */
   .arte :global(.retrato) { background: none !important; }
   .arte :global(.retrato.falta) { opacity: 0.42; }
   .arte :global(.retrato) img { object-fit: contain; object-position: center bottom; }
@@ -147,29 +153,66 @@ const etiquetas = [
   .etiqueta.fuerte { color: var(--c-azul); font-weight: 700; }
 
   .lema {
-    margin-block-start: 24px;
-    margin-inline: auto;
-    inline-size: min(100% - var(--margen) * 2, var(--ancho-max));
-    text-align: end;
     font-size: var(--t-lema);
     font-weight: 500;
+    line-height: 28px;
+    text-align: center;
     color: var(--c-azul);
+  }
+
+  /* ---- anclaje al borde del beige (solo escritorio) ----
+     El botón y el lema se posicionan por su offset real desde el techo de la
+     sección, porque su gracia es justamente dónde caen respecto al borde del
+     fondo: el botón montado a caballo y el lema ya en el blanco. */
+  @media (min-width: 56.25rem) {
+    .hero { min-block-size: 651px; }
+
+    .boton {
+      position: absolute;
+      inset-block-start: 490px;   /* 556 del lienzo − 66 de padding superior */
+      inset-inline-start: 0;
+      margin: 0;
+    }
+
+    .lema {
+      position: absolute;
+      inset-block-start: 555px;   /* 615 del lienzo − 66 */
+      /* 42:65 mide 498 y arranca en x775 sobre un ancho útil de 1240 */
+      inset-inline-start: 54.44%;
+      inline-size: 40.16%;
+    }
   }
 
   @media (max-width: 1200px) {
     .rejilla-hero { gap: 40px; }
-    .fondo { block-size: 74%; }
+    .fondo { block-size: calc(100% - 56px); }
 
+    @media (min-width: 56.25rem) {
+      .hero { min-block-size: 0; padding-block-end: 96px; }
+      .boton { inset-block-start: auto; inset-block-end: 56px; }
+      .lema { inset-block-start: auto; inset-block-end: 0; }
+    }
   }
 
-  @media (max-width: 900px) {
-    .hero { padding-block-start: 40px; }
-    .rejilla-hero { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  /* ---- táctil: todo vuelve al flujo ---- */
+  @media (max-width: 56.25rem) {
+    .hero { padding-block: 40px 0; }
+
+    .rejilla-hero {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
     .arte { justify-self: center; order: -1; max-inline-size: 460px; }
     h1 { max-inline-size: none; }
     .entrada { max-inline-size: none; }
-    .fondo { block-size: 62%; }
-    .lema { text-align: start; margin-block-start: 40px; }
+
+    /* El beige llega hasta la mitad del botón; el lema queda ya en blanco. */
+    .fondo { block-size: calc(100% - 92px); }
+
+    .boton { margin-block-start: 32px; justify-self: start; }
+    .lema { margin-block-start: 34px; text-align: start; }
+
     .etiqueta { font-size: 12px; }
   }
 </style>

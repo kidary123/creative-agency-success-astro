@@ -535,3 +535,27 @@ Las siete fotos de la tira son los originales de Figma sin optimizar y suman
 unos 35 MB (`retrato-2` 7.6 MB, `retrato-6` 8.8 MB, `retrato-7` 6.9 MB).
 Convertidas a WebP al mismo tratamiento que el hero bajarían a menos de 2 MB en
 total sin diferencia visible.
+
+---
+
+## 11. El botón y el lema del hero vuelven a su posición del lienzo
+
+Los tenía movidos, y sus posiciones en Figma no son casuales:
+
+| nodo | y en el lienzo | dónde cae |
+|---|---|---|
+| `82:49` fondo beige | 100 → **696** | — |
+| `38:168` Get Started | 656 → **715** | **cruza el borde**: 40px en beige, 19px ya en blanco |
+| `42:65` lema | 715 → 751 | enteramente en la franja blanca |
+
+El lema además mide 498 y arranca en x775 sobre un ancho útil de 1240: queda
+centrado bajo el arte, no alineado a la derecha de la página.
+
+Por eso, en escritorio, botón y lema se posicionan por su offset real desde el
+techo de la sección (490px y 555px, que son 556 y 615 del lienzo menos los 66
+de padding superior) en lugar de ir en el flujo de la columna de texto. La
+sección mide 651px, que es exactamente 751 − 100.
+
+Por debajo de 900px todo vuelve al flujo y el beige se corta a
+`calc(100% - 92px)`, que deja el botón montado en el borde igual que en
+escritorio y el lema en el blanco.
